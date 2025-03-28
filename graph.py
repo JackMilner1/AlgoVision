@@ -6,21 +6,21 @@ class Graph():
         self.addVertices()
 
     def addVertices(self):
-        for i in range(self.width):
-            for j in range(self.height):
+        for i in range(self.height):
+            for j in range(self.width):
                 index = (i * self.width) + j
                 newVertex = Vertex(index)
                 if index % self.width > 0:
                     newVertex.addEdge(index - 1)
 
-                if index + 1 % self.width != 0:
+                if (index + 1) % self.width != 0 :
                     newVertex.addEdge(index + 1)
 
-                if index + (self.width - i) <= self.width * self.height - 1:
-                    newVertex.addEdge(index + (self.width - i))
+                if index + self.width <= self.width * self.height - 1:
+                    newVertex.addEdge(index + self.width)
 
-                if index - (self.width - i) >= 0:
-                    newVertex.addEdge(index - (self.width - i))
+                if index - self.width >= 0:
+                    newVertex.addEdge(index - self.width)
 
                 self.vertices = self.vertices + [newVertex]
 
@@ -62,7 +62,7 @@ class Vertex():
         self.isWall = False
             
 
-newGraph = Graph(5,5)
+newGraph = Graph(2,5)
 vertices = newGraph.getVertices()
 for vertex in vertices:
     print(vertex.getID())
