@@ -49,6 +49,23 @@ class Vertex():
         for edge in self.edges:
             print(edge)
 
+    def getEdges(self):
+        if self.isWall:
+            print("wall")
+            return []
+        
+        return self.edges
+    
+    def getNeighbours(self):
+        if self.isWall:
+            print("wall")
+            return []
+        
+        neighbours = []
+        for edge in self.edges:
+            neighbours = neighbours + [edge[1]]
+        return neighbours
+
     def getID(self):
         return self.id
 
@@ -56,14 +73,9 @@ class Vertex():
         pass
 
     def convertToWall(self):
-        self.edges = []
+        self.isWall = True
     
     def revertWall(self):
         self.isWall = False
             
 
-newGraph = Graph(2,5)
-vertices = newGraph.getVertices()
-for vertex in vertices:
-    print(vertex.getID())
-    vertex.printEdges()
