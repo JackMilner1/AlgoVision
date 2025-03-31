@@ -1,6 +1,6 @@
 import pygame
 import os
-import graph
+import GraphClasses as graph
 import UIUtils.GraphUIUtils as utils
 
 pygame.init()
