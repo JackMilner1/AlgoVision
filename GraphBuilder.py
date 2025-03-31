@@ -1,7 +1,7 @@
 import pygame
 import os
 import graph
-import UtilsUI as utils
+import UIUtils.GraphUIUtils as utils
 
 pygame.init()
 

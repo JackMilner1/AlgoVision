@@ -40,6 +40,7 @@ class Vertex():
         self.id = id
         self.edges = []
         self.isWall = isWall
+        self.isStartEnd = False
 
     def addEdge(self,whereToo,weight = 1):
         if not self.isWall:

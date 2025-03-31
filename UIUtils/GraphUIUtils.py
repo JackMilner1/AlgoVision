@@ -1,6 +1,7 @@
 import pygame
 
 WALL_COLOUR = (0,0,0)
+START_END_COLOUR = (115, 232, 111)
 
 class GridSquare():
     def __init__(self,vertexClass,x, y,width,height, colour):
@@ -27,12 +28,13 @@ class GridSquare():
             if pygame.mouse.get_pressed()[0] == 1 and not self.clicked:
                 if not self.vertex.isWall:
                     self.vertex.convertToWall()
-
+                self.vertex.isStartEnd = False
                 self.clicked = True
                 self.moving = True
                 action = True
 
             if pygame.mouse.get_pressed()[1] == 1 and not self.clicked:
+                self.vertex.isStartEnd = True
                 self.clicked = True
                 self.moving = True
                 action = True
@@ -40,7 +42,7 @@ class GridSquare():
             if pygame.mouse.get_pressed()[2] == 1 and not self.clicked:
                 if self.vertex.isWall:
                     self.vertex.revertWall()
-
+                self.vertex.isStartEnd = False
                 self.clicked = True
                 self.moving = True
                 action = True
@@ -53,6 +55,8 @@ class GridSquare():
 
         if self.vertex.isWall:
             pygame.draw.rect(screen,(WALL_COLOUR),self.rect)
+        elif self.vertex.isStartEnd:
+            pygame.draw.rect(screen,(START_END_COLOUR),self.rect)
         else:        
             pygame.draw.rect(screen,(self.colour),self.rect)
         return action
