@@ -5,21 +5,21 @@ class PriorityQueue:
         self.createHeap()
         print(self.queue)
 
-    def heaper(self,indexOfSmallest):
+    def heaper(self,currentSmallest):
         array = self.queue
         sizeOfHeap = len(self.queue)
-        smallest = indexOfSmallest
-        leftNode = (indexOfSmallest * 2) + 1
-        rightNode = (indexOfSmallest * 2) + 2
+        smallest = currentSmallest
+        leftNode = (currentSmallest * 2) + 1
+        rightNode = (currentSmallest * 2) + 2
 
-        if leftNode < sizeOfHeap and array[leftNode] < array[smallest]:
+        if leftNode < sizeOfHeap and array[leftNode][1] < array[smallest][1]:
             smallest = leftNode
         
-        if rightNode < sizeOfHeap and array[rightNode] < array[smallest]:
+        if rightNode < sizeOfHeap and array[rightNode][1] < array[smallest][1]:
             smallest = rightNode
 
-        if smallest != indexOfSmallest:
-            array[indexOfSmallest], array[smallest] = array[smallest],array[indexOfSmallest]
+        if smallest != currentSmallest:
+            array[currentSmallest], array[smallest] = array[smallest],array[currentSmallest]
             self.heaper(smallest)
 
     def createHeap(self):
@@ -41,3 +41,7 @@ class PriorityQueue:
             self.createHeap()
             print(f"{itemToRemove} has been removed new queue: {self.queue}")
             return itemToRemove
+        
+    def isEmpty(self):
+        return len(self.queue) == 0
+        

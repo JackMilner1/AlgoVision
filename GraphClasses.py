@@ -24,7 +24,6 @@ class Graph():
 
                 self.vertices = self.vertices + [newVertex]
 
-
     def getVertices(self):
         return self.vertices
     
@@ -42,6 +41,7 @@ class Graph():
 class Vertex():
     def __init__(self,id,isWall = False):
         self.id = id
+        self.cost = 10000
         self.edges = []
         self.isWall = isWall
         self.isStartEnd = False
@@ -74,13 +74,16 @@ class Vertex():
     def getID(self):
         return self.id
 
-    def drawUI(self):
-        pass
-
     def convertToWall(self):
         self.isWall = True
     
     def revertWall(self):
         self.isWall = False
+
+    def setCostToVertex(self,newVal):
+        self.cost = newVal
+
+    def getCost(self):
+        return self.cost
             
 
