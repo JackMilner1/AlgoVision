@@ -28,6 +28,10 @@ class Graph():
     def getVertices(self):
         return self.vertices
     
+    def getVertex(self,index):
+        if index >= 0 and index <= len(self.vertices):
+            return self.vertices[index]
+    
     def printGraph(self):
         for vertex in self.vertices:
             vertex.printEdges()
