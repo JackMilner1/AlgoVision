@@ -45,6 +45,7 @@ class Vertex():
         self.edges = []
         self.isWall = isWall
         self.isStartEnd = False
+        self.cameFrom = None
 
     def addEdge(self,whereToo,weight = 1):
         if not self.isWall:
@@ -80,8 +81,12 @@ class Vertex():
     def revertWall(self):
         self.isWall = False
 
-    def setCostToVertex(self,newVal):
+    def setCost(self,newVal,cameFrom):
         self.cost = newVal
+        self.cameFrom = cameFrom
+
+    def getCameFrom(self):
+        return self.cameFrom
 
     def getCost(self):
         return self.cost

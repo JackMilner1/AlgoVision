@@ -7,28 +7,40 @@ sys.path.append('C:\\Users\\jacke\\Documents\\GitHub\\AlgoVision\\QueueTypes')
 sys.path.append('C:\\Users\\jacke\\Documents\\GitHub\\AlgoVision') 
 import PriorityQueue # type: ignore
 import GraphClasses # type: ignore
-import random
 
 def DijkstrasAlgorithm(graph,start,finish):
     priorityQueue = PriorityQueue.PriorityQueue()
     vertices = graph.getVertices()
 
-    currentVertex = start
-    vertices[start].setCostToVertex(0)
+    currentVertex = vertices[start]
+    vertices[start].setCost(0,None)
     priorityQueue.enqueue((start,0))
-    depth = 0 
-    while currentVertex != finish and not priorityQueue.isEmpty() and depth != 10:
 
-        currentVertex = vertices[priorityQueue.dequeue()[0]]
+    while currentVertex.getID() != finish and not priorityQueue.isEmpty():
+
+        dequeuedElement = priorityQueue.dequeue()
+        currentVertex = vertices[dequeuedElement[0]]
+        currentCost = dequeuedElement[1]
 
         for edge in currentVertex.getEdges():
-            weight = random.randint(0,14)
-            priorityQueue.enqueue((edge[1],weight))
 
-        depth = depth + 1
-        
-    print("iteration done")
+            if currentCost + edge[2] < vertices[edge[1]].getCost():
+                vertices[edge[1]].setCost(currentCost + edge[2],currentVertex)
+                priorityQueue.enqueue((edge[1],currentCost + edge[2]))
 
-        
-graph = GraphClasses.Graph(5,5)
-DijkstrasAlgorithm(graph,3,4)
+    return backtrack(vertices[start], currentVertex)
+
+def backtrack(start,finish):
+    path = []
+    currentElement = finish
+    while currentElement != start and currentElement != None:
+        next = currentElement.getCameFrom()
+        currentElement = next
+        path = [next] + path
+
+    path.append(finish)
+
+    for element in path:
+        print(f"{element.getID()}")
+
+    return path

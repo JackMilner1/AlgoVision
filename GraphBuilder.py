@@ -2,6 +2,7 @@ import pygame
 import os
 import GraphClasses as graph
 import UIUtils.GraphUIUtils as utils
+import ShortestPathAlgorithms.Dijkstras as Dijkstras
 
 pygame.init()
 
@@ -45,6 +46,10 @@ def drawSquares():
 def start():
     running = True
     drawSquares()
+    path = Dijkstras.DijkstrasAlgorithm(newGraph,0,30)
+    for i in path:
+        i.isStartEnd = True
+
     while running:
         # poll for events
         # pygame.QUIT event means the user clicked X to close your window
