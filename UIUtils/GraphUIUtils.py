@@ -13,7 +13,6 @@ class GridSquare():
         self.closeness = 0
         self.rect.topleft = (x,y)
         self.clicked = False
-        self.moving = False
         self.x = x
         self.y = y
 
@@ -33,14 +32,12 @@ class GridSquare():
                 self.vertex.isStartEnd = False
                 self.vertex.isPath = False
                 self.clicked = True
-                self.moving = True
                 action = True
 
             if pygame.mouse.get_pressed()[1] == 1 and not self.clicked:
                 self.vertex.isStartEnd = True
                 self.vertex.isPath = False
                 self.clicked = True
-                self.moving = True
                 action = True
 
             if pygame.mouse.get_pressed()[2] == 1 and not self.clicked:
@@ -49,28 +46,26 @@ class GridSquare():
                 self.vertex.isStartEnd = False
                 self.vertex.isPath = False
                 self.clicked = True
-                self.moving = True
                 action = True
 
 
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
 
-        self.moving = False
-
         if self.vertex.isWall:
             pygame.draw.rect(screen,(WALL_COLOUR),self.rect)
         elif self.vertex.isStartEnd:
             pygame.draw.rect(screen,(START_END_COLOUR),self.rect)
         elif self.vertex.isPath:
-            red = 255 - self.closeness * 5
-            green = 0 + self.closeness * 6
+            red = 0 + self.closeness * 5
+            green = 255 - self.closeness * 7
             pygame.draw.rect(screen,(self.clamp(red,0,255),self.clamp(green,0,255),0),self.rect)
         else:        
             pygame.draw.rect(screen,(self.colour),self.rect)
+
         return action
     
-    def clamp(self,value,lowerBound,upperBound):#
+    def clamp(self,value,lowerBound,upperBound): 
         if value < lowerBound:
             return lowerBound
         elif value > upperBound:

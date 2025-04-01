@@ -19,7 +19,7 @@ boardWidth = 40
 boardHeight = 20
 WHITE_SQUARE_COLOUR = (70,70,89)
 SQUARE_SIZE = 30
-SPACING = 10
+SPACING = 3
 BOARD_START_X = int((SCREEN_WIDTH - ((SQUARE_SIZE + SPACING) * boardWidth)) / 2)
 BOARD_START_Y = int((SCREEN_HEIGHT - ((SQUARE_SIZE + SPACING) * boardHeight)) / 2) + 10
 
@@ -46,6 +46,9 @@ def drawSquares():
 def start():
     running = True
     graphChanged = True
+    runningSimulation = True
+    start = 0
+    goal = 700
     drawSquares()
 
     while running:
@@ -57,24 +60,29 @@ def start():
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill((43,43,55))
-        pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.08))
+        pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
 
-        # RENDER YOUR GAME HERE
         for i in graphUI:
             if i.drawButton(screen):
-                vert = i.getClass()
                 #print(f"Node Number : {vert.getID()} \nAll neigbours : {vert.getNeighbours()}")
                 graphChanged = True
 
-        if graphChanged:
-            print("recalc")
+        if graphChanged and runningSimulation:
             newGraph.reset()
-            resetPathUI(500)
-            path = Dijkstras.DijkstrasAlgorithm(newGraph,0,500)
+            resetPathUI(goal)
+            path = Dijkstras.DijkstrasAlgorithm(newGraph,start,goal)
             graphChanged = False
             if path != None:
                 for i in path:
                     i.isPath = True
+
+        rect = pygame.Rect(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 2)),60,60)
+        pygame.draw.rect(screen,(35, 35, 38),rect)
+        draw_text("Run",rect)
+
+        rect = pygame.Rect(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 4)),60,60)
+        pygame.draw.rect(screen,(35, 35, 38),rect)
+        draw_text("Reset",rect)
 
         # flip() the display to put your work on screen
         pygame.display.flip()
@@ -85,7 +93,7 @@ def euclideanDistance(square1,sqaure2):
     widthOne,heightOne = convertToXY(square1)
     widthTwo,heightTwo = convertToXY(sqaure2)
 
-    return ((heightTwo - heightOne) + (widthTwo - widthOne))
+    return (abs(heightTwo - heightOne) + abs(widthTwo - widthOne))
 
 def convertToXY(index):
     return (index // boardWidth) + 1, (index // boardHeight) + 1
@@ -97,9 +105,10 @@ def resetPathUI(destination):
         if vertex.isPath:
             vertex.isPath = False
 
+
 def draw_text(text, button_rect):
     text_color = (255, 255, 255)
-    font = pygame.font.Font(None, 13)
+    font = pygame.font.Font(None, 24)
     text_surface = font.render(text, True, text_color)
     text_rect = text_surface.get_rect(center=button_rect.center)
     screen.blit(text_surface, text_rect)

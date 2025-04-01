@@ -48,7 +48,4 @@ def backtrack(start,finish):
 
     path.append(finish)
 
-    for element in path:
-        print(f"{element.getID()}")
-
     return path

@@ -3,7 +3,6 @@ class PriorityQueue:
     def __init__(self,queue = []):
         self.queue = queue
         self.createHeap()
-        print(self.queue)
 
     def heaper(self,currentSmallest):
         array = self.queue
@@ -31,7 +30,7 @@ class PriorityQueue:
     def enqueue(self,item):
         self.queue.append(item)
         self.createHeap()
-        print(f"{item} has been added new queue: {self.queue}")
+        #print(f"{item} has been added new queue: {self.queue}")
 
 
     def dequeue(self):
@@ -39,9 +38,10 @@ class PriorityQueue:
             itemToRemove = self.queue[0]
             self.queue.pop(0)
             self.createHeap()
-            print(f"{itemToRemove} has been removed new queue: {self.queue}")
+            #print(f"{itemToRemove} has been removed new queue: {self.queue}")
             return itemToRemove
         
     def isEmpty(self):
         return len(self.queue) == 0
         
+
