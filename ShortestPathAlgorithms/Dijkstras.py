@@ -16,19 +16,27 @@ def DijkstrasAlgorithm(graph,start,finish):
     vertices[start].setCost(0,None)
     priorityQueue.enqueue((start,0))
 
-    while currentVertex.getID() != finish and not priorityQueue.isEmpty():
+    while not priorityQueue.isEmpty():
 
         dequeuedElement = priorityQueue.dequeue()
         currentVertex = vertices[dequeuedElement[0]]
         currentCost = dequeuedElement[1]
 
-        for edge in currentVertex.getEdges():
+        if not currentVertex.visited:
+            for edge in currentVertex.getEdges():
 
-            if currentCost + edge[2] < vertices[edge[1]].getCost():
-                vertices[edge[1]].setCost(currentCost + edge[2],currentVertex)
-                priorityQueue.enqueue((edge[1],currentCost + edge[2]))
+                if currentCost + edge[2] < vertices[edge[1]].getCost() and not vertices[edge[1]].isWall:
+                    vertices[edge[1]].setCost(currentCost + edge[2],currentVertex)
+                    priorityQueue.enqueue((edge[1],currentCost + edge[2]))
+                    vertices[edge[1]].visiting = True
 
-    return backtrack(vertices[start], currentVertex)
+        currentVertex.visited = True
+
+    
+    if vertices[finish].getCameFrom() == None:
+        print("No path")
+    else:
+        return backtrack(vertices[start], vertices[finish])
 
 def backtrack(start,finish):
     path = []

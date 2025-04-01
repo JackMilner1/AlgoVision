@@ -45,10 +45,8 @@ def drawSquares():
              
 def start():
     running = True
+    graphChanged = True
     drawSquares()
-    path = Dijkstras.DijkstrasAlgorithm(newGraph,0,30)
-    for i in path:
-        i.isStartEnd = True
 
     while running:
         # poll for events
@@ -65,12 +63,39 @@ def start():
         for i in graphUI:
             if i.drawButton(screen):
                 vert = i.getClass()
-                print(f"Node Number : {vert.getID()} \nAll neigbours : {vert.getNeighbours()}")
+                #print(f"Node Number : {vert.getID()} \nAll neigbours : {vert.getNeighbours()}")
+                graphChanged = True
+
+        if graphChanged:
+            print("recalc")
+            newGraph.reset()
+            resetPathUI(500)
+            path = Dijkstras.DijkstrasAlgorithm(newGraph,0,500)
+            graphChanged = False
+            if path != None:
+                for i in path:
+                    i.isPath = True
 
         # flip() the display to put your work on screen
         pygame.display.flip()
 
     pygame.quit()
+
+def euclideanDistance(square1,sqaure2):
+    widthOne,heightOne = convertToXY(square1)
+    widthTwo,heightTwo = convertToXY(sqaure2)
+
+    return ((heightTwo - heightOne) + (widthTwo - widthOne))
+
+def convertToXY(index):
+    return (index // boardWidth) + 1, (index // boardHeight) + 1
+
+def resetPathUI(destination):
+    for i in graphUI:
+        vertex = i.getClass()
+        i.closeness = euclideanDistance(vertex.getID(),destination)
+        if vertex.isPath:
+            vertex.isPath = False
 
 def draw_text(text, button_rect):
     text_color = (255, 255, 255)

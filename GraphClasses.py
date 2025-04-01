@@ -24,6 +24,11 @@ class Graph():
 
                 self.vertices = self.vertices + [newVertex]
 
+    def reset(self):
+        for vertex in self.vertices:
+            vertex.visited = False
+            vertex.setCost(10000000000,None)
+
     def getVertices(self):
         return self.vertices
     
@@ -45,6 +50,9 @@ class Vertex():
         self.edges = []
         self.isWall = isWall
         self.isStartEnd = False
+        self.isPath = False
+        self.visited = False
+        self.visiting = False
         self.cameFrom = None
 
     def addEdge(self,whereToo,weight = 1):
