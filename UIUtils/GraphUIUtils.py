@@ -57,8 +57,8 @@ class GridSquare():
         elif self.vertex.isStartEnd:
             pygame.draw.rect(screen,(START_END_COLOUR),self.rect)
         elif self.vertex.isPath:
-            red = 0 + self.closeness * 5
-            green = 255 - self.closeness * 7
+            red = 0 + (self.closeness * 8) 
+            green = 255 - (self.closeness * 8) 
             pygame.draw.rect(screen,(self.clamp(red,0,255),self.clamp(green,0,255),0),self.rect)
         else:        
             pygame.draw.rect(screen,(self.colour),self.rect)

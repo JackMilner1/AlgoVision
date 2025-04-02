@@ -46,14 +46,15 @@ def drawSquares():
 def start():
     running = True
     graphChanged = True
-    runningSimulation = True
-    start = 0
-    goal = 700
+    runningSimulation = False
+    start = None
+    goal = None
     drawSquares()
 
     while running:
         # poll for events
         # pygame.QUIT event means the user clicked X to close your window
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -66,6 +67,17 @@ def start():
             if i.drawButton(screen):
                 #print(f"Node Number : {vert.getID()} \nAll neigbours : {vert.getNeighbours()}")
                 graphChanged = True
+                if i.vertex.isStartEnd:
+                    if start == None:
+                        start = i.vertex.getID()
+                    else:
+                        if goal != None:
+                            graphUI[goal].vertex.isStartEnd = False
+                            
+                        goal = i.vertex.getID()
+
+        if start != None and goal != None:
+            runningSimulation = True
 
         if graphChanged and runningSimulation:
             newGraph.reset()
@@ -104,8 +116,7 @@ def resetPathUI(destination):
         i.closeness = euclideanDistance(vertex.getID(),destination)
         if vertex.isPath:
             vertex.isPath = False
-
-
+    
 def draw_text(text, button_rect):
     text_color = (255, 255, 255)
     font = pygame.font.Font(None, 24)
