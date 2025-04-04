@@ -8,7 +8,6 @@ class GridSquare():
     def __init__(self,vertexClass,x, y,width,height, colour):
         self.vertex = vertexClass
         self.colour = colour
-        self.selectable = True
         self.rect = pygame.Rect(x,y,width,height)
         self.closeness = 0
         self.rect.topleft = (x,y)
@@ -19,11 +18,6 @@ class GridSquare():
     
 <<<<<<< Updated upstream
     def drawButton(self, screen):
-        if not self.selectable:
-            return
-=======
-    def drawSquare(self, screen):
->>>>>>> Stashed changes
 
         action = False
         # get pos of mouse
