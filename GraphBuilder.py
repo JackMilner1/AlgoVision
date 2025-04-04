@@ -3,11 +3,9 @@ import os
 import GraphClasses as graph
 import UIUtils.GraphUIUtils as utils
 import ShortestPathAlgorithms.Dijkstras as Dijkstras
-<<<<<<< Updated upstream
-=======
 import MazeGeneration
 import UIUtils.Buttons as Button
->>>>>>> Stashed changes
+
 
 pygame.init()
 
@@ -55,12 +53,9 @@ def start():
     start = None
     goal = None
     drawSquares()
-<<<<<<< Updated upstream
-=======
     runButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 3)),90,90,(35, 35, 38),"Run")
     resetButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 6)),90,90,(35, 35, 38),"Reset")
     genButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 9)),90,90,(35, 35, 38),"Gen Maze")
->>>>>>> Stashed changes
 
     while running:
         # poll for events

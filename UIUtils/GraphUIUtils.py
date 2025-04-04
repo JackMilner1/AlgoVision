@@ -16,8 +16,8 @@ class GridSquare():
         self.y = y
 
     
-<<<<<<< Updated upstream
-    def drawButton(self, screen):
+
+    def drawSquare(self, screen):
 
         action = False
         # get pos of mouse
