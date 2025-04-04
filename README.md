@@ -54,6 +54,7 @@ Traversals
 * Pre-order traversal
 * Post-order traversal
 * In-order traversal
+###
 Maze generation
 * Stack implementation ✅
 * Recursive division
