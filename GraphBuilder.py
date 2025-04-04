@@ -77,10 +77,10 @@ def start():
                     if start == None:
                         start = i.vertex.getID()
                     else:
-                        if goal != None:
-                            graphUI[goal].vertex.isStartEnd = False
-                            
-                        goal = i.vertex.getID()
+                        if i.vertex.getID() != start and i.vertex.getID() != goal:
+                            if goal != None:
+                                graphUI[goal].vertex.isStartEnd = False
+                            goal = i.vertex.getID()
 
         if graphChanged and runningSimulation:
             newGraph.reset()
@@ -108,7 +108,7 @@ def start():
             start = None
             goal = None
             reset()
-            MazeGeneration.generateMaze(newGraph,50)
+            MazeGeneration.generateMaze(newGraph,0)
 
         # flip() the display to put your work on screen
         pygame.display.flip()

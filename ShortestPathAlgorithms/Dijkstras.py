@@ -34,7 +34,7 @@ def DijkstrasAlgorithm(graph,start,finish):
 
     
     if vertices[finish].getCameFrom() == None:
-        print("No path")
+        pass
     else:
         return backtrack(vertices[start], vertices[finish])
 
