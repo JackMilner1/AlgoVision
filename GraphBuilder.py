@@ -3,6 +3,11 @@ import os
 import GraphClasses as graph
 import UIUtils.GraphUIUtils as utils
 import ShortestPathAlgorithms.Dijkstras as Dijkstras
+<<<<<<< Updated upstream
+=======
+import MazeGeneration
+import UIUtils.Buttons as Button
+>>>>>>> Stashed changes
 
 pygame.init()
 
@@ -50,6 +55,12 @@ def start():
     start = None
     goal = None
     drawSquares()
+<<<<<<< Updated upstream
+=======
+    runButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 3)),90,90,(35, 35, 38),"Run")
+    resetButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 6)),90,90,(35, 35, 38),"Reset")
+    genButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 9)),90,90,(35, 35, 38),"Gen Maze")
+>>>>>>> Stashed changes
 
     while running:
         # poll for events
@@ -64,7 +75,7 @@ def start():
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
 
         for i in graphUI:
-            if i.drawButton(screen):
+            if i.drawSquare(screen):
                 #print(f"Node Number : {vert.getID()} \nAll neigbours : {vert.getNeighbours()}")
                 graphChanged = True
                 if i.vertex.isStartEnd:
@@ -76,9 +87,6 @@ def start():
                             
                         goal = i.vertex.getID()
 
-        if start != None and goal != None:
-            runningSimulation = True
-
         if graphChanged and runningSimulation:
             newGraph.reset()
             resetPathUI(goal)
@@ -88,13 +96,24 @@ def start():
                 for i in path:
                     i.isPath = True
 
-        rect = pygame.Rect(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 2)),60,60)
-        pygame.draw.rect(screen,(35, 35, 38),rect)
-        draw_text("Run",rect)
+        if runButton.drawButton(screen):
+            if start != None and goal != None:
+                runningSimulation = True
+            else:
+                print("need start and end to run")
 
-        rect = pygame.Rect(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 4)),60,60)
-        pygame.draw.rect(screen,(35, 35, 38),rect)
-        draw_text("Reset",rect)
+        if resetButton.drawButton(screen):
+            runningSimulation = False
+            start = None
+            goal = None
+            reset()
+
+        if genButton.drawButton(screen):
+            runningSimulation = False
+            start = None
+            goal = None
+            reset()
+            MazeGeneration.generateMaze(newGraph,50)
 
         # flip() the display to put your work on screen
         pygame.display.flip()
@@ -123,5 +142,10 @@ def draw_text(text, button_rect):
     text_surface = font.render(text, True, text_color)
     text_rect = text_surface.get_rect(center=button_rect.center)
     screen.blit(text_surface, text_rect)
+
+def reset():
+    for i in graphUI:
+        vertex = i.getClass()
+        vertex.reset()
 
 start()

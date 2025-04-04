@@ -17,9 +17,13 @@ class GridSquare():
         self.y = y
 
     
+<<<<<<< Updated upstream
     def drawButton(self, screen):
         if not self.selectable:
             return
+=======
+    def drawSquare(self, screen):
+>>>>>>> Stashed changes
 
         action = False
         # get pos of mouse

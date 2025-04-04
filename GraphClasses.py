@@ -98,5 +98,14 @@ class Vertex():
 
     def getCost(self):
         return self.cost
-            
+    
+    def reset(self):
+        self.cost = 10000
+        self.isWall = False
+        self.isStartEnd = False
+        self.isPath = False
+        self.visited = False
+        self.visiting = False
+        self.cameFrom = None
+
 
