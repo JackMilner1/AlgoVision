@@ -3,6 +3,7 @@ import os
 import GraphClasses as graph
 import UIUtils.GraphUIUtils as utils
 import ShortestPathAlgorithms.Dijkstras as Dijkstras
+import MazeGeneration
 
 pygame.init()
 
@@ -50,6 +51,7 @@ def start():
     start = None
     goal = None
     drawSquares()
+    MazeGeneration.generateMaze(newGraph,50)
 
     while running:
         # poll for events
