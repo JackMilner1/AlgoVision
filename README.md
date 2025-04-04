@@ -1,4 +1,7 @@
 # AlgoVision
+<link rel="stylesheet" type="text/css" href="https://unpkg.com/checkboxes@1.3.3/dist/css/checkboxes.min.css">
+
+ 
 ***Developed by Jack Milner***
 \
 \
@@ -21,15 +24,15 @@ To install, navigate to your terminal in your chosen IDE (Visual Studio Code) an
 This project currently supports the following:
 ###
 Graphs
-* Un-Weighted graphs
-* Weighted graphs
-* A graph building tool
+* Un-Weighted graphs ✅
+* Weighted graphs ✅
+* A graph building tool ✅
 ### 
 Queues
-* Priority queues
-* Circular queues
+* Priority queues ✅
+* Circular queues 
 * FIFO queue
-* LIFO queue (Stack)
+* LIFO queue (Stack) ✅
 ### 
 Common datastructures
 * Linked Lists
@@ -44,12 +47,15 @@ Sorts
 Searching
 * Linear search
 * Binary Search
-* Djikstras
+* Djikstras ✅
 * A*
 ### 
 Traversals
 * Pre-order traversal
 * Post-order traversal
 * In-order traversal
+Maze generation
+* Stack implementation ✅
+* Recursive division
 ## Future Ambitions
 * Complete v1.0.0 of the project 
