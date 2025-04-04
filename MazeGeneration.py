@@ -25,7 +25,6 @@ def generateMaze(graph,startIndex):
                     nonVisitedNodes = nonVisitedNodes + [vertices[node[1]]]
 
         if len(nonVisitedNodes) > 0:
-            print(f"picking node from {nonVisitedNodes}")
             currentItem = nonVisitedNodes[random.randint(0,len(nonVisitedNodes) - 1)]
             stack.push(currentItem)
         else:
