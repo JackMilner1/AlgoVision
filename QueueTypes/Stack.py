@@ -1,7 +1,8 @@
 
 class Stack():
-    def __init__(self):
+    def __init__(self,size = 11):
         self.stackArray = []
+        self.size = size
 
     def pop(self):
         if not self.isEmpty():
@@ -15,3 +16,12 @@ class Stack():
 
     def getElements(self):
         return self.stackArray
+    
+    def maxItems(self):
+        return self.size
+    
+    def howManyItems(self):
+        return len(self.stackArray)
+
+    def clear(self):
+        self.stackArray = []

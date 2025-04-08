@@ -1,7 +1,7 @@
 import pygame
 import os 
 import UIUtils.Buttons as Button
-import random
+import QueueTypes.Stack as Stack
 
 pygame.init()
 
@@ -28,7 +28,8 @@ def start():
     popButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Pop")
     resetButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5 + (95 * 2),90,90,(35, 35, 38),"Reset")
 
-    elementsInStack = 0
+    stack = Stack.Stack()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -38,19 +39,19 @@ def start():
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
         drawStackUI()
 
-        for i in range(elementsInStack):
+        for i in range(stack.howManyItems()):
             drawItemInStack(i)
 
         if pushButton.drawButton(screen):
-            if elementsInStack < 11:
-                elementsInStack += 1
+            if stack.howManyItems() < stack.maxItems():
+                stack.push(3)
             else:
                 print("Stack Overflow!")
         if resetButton.drawButton(screen):
-            elementsInStack = 0
+            stack.clear()
         if popButton.drawButton(screen):
-            if elementsInStack > 0:
-                elementsInStack -= 1
+            if not stack.isEmpty():
+                stack.pop()
             else: 
                 print("Stack Underflow!")
         pygame.display.flip()
