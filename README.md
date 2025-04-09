@@ -6,6 +6,8 @@
 \
 \
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://buymeacoffee.com/jackmilner)
+
+![gif](https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExa3N6Zm1vd3luNXR4b3FhamY0NXBmbDR3OW82a3FlZWIwaDFnMGhsciZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3uGaHuzJTQg8KZdVBd/giphy.gif)
 ###
 ## Supported Platforms
 - [x] Windows
