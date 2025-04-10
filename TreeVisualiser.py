@@ -1,6 +1,7 @@
 import pygame
 import os 
 import GraphClasses
+import UIUtils.Buttons as Button
 
 pygame.init()
 
@@ -15,26 +16,18 @@ pygame.display.set_caption('Play')
 
 def start():
     running = True
-    node1 = GraphClasses.VertexGeometry(1,400,500)
-    node2 = GraphClasses.VertexGeometry(2,600,700)
-    node3 = GraphClasses.VertexGeometry(3,600,300)
-    node4 = GraphClasses.VertexGeometry(4,800,700)
-    node5 = GraphClasses.VertexGeometry(5,800,300)
-    node6 = GraphClasses.VertexGeometry(6,1000,700)
-    node7 = GraphClasses.VertexGeometry(7,1000,300)
-    node8 = GraphClasses.VertexGeometry(8,1200,500)
-    #nodes = [(400,500),(600,700),(600,300),(800,700),(800,300),(1000,700),(1000,300),(1200,500)]
-    node1.addEdge(screen,node2)
-    node2.addEdge(screen,node8)
-    node8.addEdge(screen,node3)
-    nodes = [node1,node2,node3,node4,node5,node6,node7,node8]
+    nodes = []
 
+    nodeFromSelected = None
+
+    screenClickArea = Button.Button(0,SCREEN_HEIGHT*0.15,SCREEN_WIDTH,SCREEN_HEIGHT*0.85,(43,43,55))
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        screen.fill((43,43,55))
+        if screenClickArea.drawButton(screen):
+            nodeFromSelected = manageScreenClick(nodes,nodeFromSelected)
         
         for node in nodes:
             node.drawEdges()
@@ -47,5 +40,25 @@ def start():
 
     pygame.quit()
 
+def manageScreenClick(nodes,nodeFromSelected):
+    coords = pygame.mouse.get_pos()
+    x = coords[0] - 50
+    y = coords[1] - 50
+    canPlace = True
+    for node in nodes:
+        if (x - 100 < node.x < x + 100) and (y - 100 < node.y < y + 100):
+            canPlace = False
+            if nodeFromSelected == None:
+                nodeFromSelected = node
+            else:
+                # draw connection 
+                nodeFromSelected.addEdge(screen,node)
+                nodeFromSelected = None
+
+    if canPlace:
+        newNode = GraphClasses.VertexGeometry(len(nodes) + 1,x,y)
+        nodes.append(newNode)
+
+    return nodeFromSelected
 
 start()
