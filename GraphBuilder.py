@@ -3,7 +3,7 @@ import os
 import GraphClasses as graph
 import UIUtils.GraphUIUtils as utils
 import ShortestPathAlgorithms.Dijkstras as Dijkstras
-import MazeGeneration
+import MazeGeneration.MazeGenerationStack as MazeGenerationStack
 import UIUtils.Buttons as Button
 
 
@@ -108,7 +108,7 @@ def start():
             start = None
             goal = None
             reset()
-            MazeGeneration.generateMaze(newGraph,0)
+            MazeGenerationStack.generateMaze(newGraph,0)
 
         # flip() the display to put your work on screen
         pygame.display.flip()

@@ -36,7 +36,7 @@ def start():
             node.drawNode(screen)
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
-        pygame.display.flip()
+        pygame.display.flip() 
 
     pygame.quit()
 
@@ -50,12 +50,14 @@ def manageScreenClick(nodes,nodeFromSelected):
             canPlace = False
             if nodeFromSelected == None:
                 nodeFromSelected = node
-            else:
+            elif nodeFromSelected != node:
                 # draw connection 
                 nodeFromSelected.addEdge(screen,node)
                 nodeFromSelected = None
-
+            break
+                
     if canPlace:
+        nodeFromSelected = None
         newNode = GraphClasses.VertexGeometry(len(nodes) + 1,x,y)
         nodes.append(newNode)
 
