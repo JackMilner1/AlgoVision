@@ -8,7 +8,7 @@ def BinarySearch(items,itemToFind,start,end):
     index = (start + end) // 2
     
     if items[index] == itemToFind:
-        return index,steps
+        return index,steps + [[itemToFind]]
     else:
         data = None
 
@@ -23,6 +23,6 @@ def BinarySearch(items,itemToFind,start,end):
     return index,steps
 
     
-listToSearch = [1,4,6,7,9,12,13,16,70,104,108]
+'''listToSearch = [1,4,6,7,9,12,13,16,70,104,108]
 data = BinarySearch(listToSearch,16,0,len(listToSearch))
-print(f"Steps to completion {data[1]}\nIndex of item {data[0]}")
+print(f"Steps to completion {data[1]}\nIndex of item {data[0]}")'''
