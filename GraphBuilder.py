@@ -6,7 +6,6 @@ import ShortestPathAlgorithms.Dijkstras as Dijkstras
 import MazeGeneration.MazeGenerationStack as MazeGenerationStack
 import UIUtils.Buttons as Button
 
-
 pygame.init()
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'

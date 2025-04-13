@@ -24,7 +24,6 @@ pygame.display.set_caption('Play')
 
 def start():
     running = True
-
     warningButton = Button.Button(SCREEN_WIDTH * 0.48, SCREEN_HEIGHT * 0.16,70,70,(43,43,55),"")
     pushButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5,90,90,(35, 35, 38),"Push")
     popButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Pop")
