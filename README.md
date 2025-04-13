@@ -38,8 +38,8 @@ Queues
 ### 
 Common datastructures
 * Linked Lists
-* Tree
-* Binary Tree
+* Tree ✅
+* Binary Tree ✅
 ### 
 Sorts
 * Bubble sort
@@ -47,8 +47,8 @@ Sorts
 * Quicksort
 ### 
 Searching
-* Linear search
-* Binary Search
+* Linear search ✅
+* Binary Search ✅
 * Djikstras ✅
 * A*
 ### 
