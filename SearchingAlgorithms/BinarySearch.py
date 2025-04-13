@@ -22,6 +22,19 @@ def BinarySearch(items,itemToFind,start,end):
     
     return index,steps
 
+def isInOrder(items):
+    if len(items) < 2:
+        return True
+    
+    currentValue = items[0]
+    for i in range(1,len(items)):
+        if items[i] < currentValue:
+            return False
+        
+        currentValue = items[i]
+    
+    return True
+    
     
 '''listToSearch = [1,4,6,7,9,12,13,16,70,104,108]
 data = BinarySearch(listToSearch,16,0,len(listToSearch))

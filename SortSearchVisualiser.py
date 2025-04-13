@@ -1,6 +1,7 @@
 import pygame
 import SearchingAlgorithms.BinarySearch as BinarySearch
 import SearchingAlgorithms.LinearSearch as LinearSearch
+import UIUtils.Buttons as Buttons
 import UIUtils.Timer as Delay
 import os 
 
@@ -18,39 +19,122 @@ pygame.display.set_caption('Play')
 def start():
     running = True
 
+    itemToSearch = 7
+
     items = [1,4,6,7,9,12,13,16,70,104,108]
-    #solution = BinarySearch.BinarySearch(items,7,0,len(items))
-    solution = LinearSearch.LinearSearch(items,70)
+    solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+    #solution = LinearSearch.LinearSearch(items,70)
     currentStep = 0
     indexOfAns = solution[0]
     steps = solution[1]
     delayTimer = Delay.Timer(1)
     delayTimer.start()
 
+    warningButton = Buttons.Button(SCREEN_WIDTH * 0.48, SCREEN_HEIGHT * 0.16,70,70,(43,43,55),"Preconditions not met for search")
+    searchItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7 + 100,90,90,(35, 35, 38),"Search Item")
+    addItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Add Item")
+    runButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7 - 100,90,90,(35, 35, 38),"Run")
+
+    text = ""
+    runningSimulation = False
+    currentSimulation = "BINSEARCH" # options = BINSEARCH,LINSEARCH,MERGESORT,BUBBLESORT,QUICKSORT
+    canRunSim = True
+
     while running:
-        for event in pygame.event.get():
+        for event in pygame.event.get():        
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    text = text[:-1]
+                else:
+                    text += event.unicode
 
         screen.fill((43,43,55))
 
-        delayTimer.update()
+        drawTextBox(text,(SCREEN_WIDTH-200) * 0.5 , (SCREEN_HEIGHT-30) * 0.6,f"Add/search for item (current is {itemToSearch}): ")
 
-        if delayTimer.timeRanOut and currentStep + 1 < len(steps):
-            currentStep += 1
-            delayTimer.reset(1)
-        elif delayTimer.timeRanOut and currentStep + 1 == len(steps):
+        if addItemButton.drawButton(screen):
+            if validInput(text):
+                items.append(int(text))
+                runningSimulation = False
+                solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+                #solution = LinearSearch.LinearSearch(items,70)
+                indexOfAns = solution[0]
+                steps = solution[1]
+                canRunSim = isValidSim(currentSimulation,items)
+
+            text = ""
+
+        if searchItemButton.drawButton(screen):
+            if validInput(text):
+                itemToSearch = int(text)
+                runningSimulation = False
+                solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+                indexOfAns = solution[0]
+                steps = solution[1]
+            text = ""
+        
+        if runButton.drawButton(screen) and canRunSim:
+            runningSimulation = True
             currentStep = 0
             delayTimer.reset(1)
 
-        drawItems(items,steps[currentStep])
+        if runningSimulation and canRunSim:
+
+            delayTimer.update()
+
+            if delayTimer.timeRanOut and currentStep + 1 < len(steps) and currentStep != -1:
+                currentStep += 1
+                delayTimer.reset(1)
+            elif delayTimer.timeRanOut and currentStep + 1 == len(steps):
+                delayTimer.timeout()
+                currentStep = -1
+                runningSimulation = False
+
+            if currentStep != -1:
+                drawItems(items,steps[currentStep])
+
+        elif not canRunSim:
+            warningButton.drawButton(screen,(255,0,0))
+            runningSimulation = False
+            drawItems(items)
+        else:
+            runningSimulation = False
+            drawItems(items)
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
         pygame.display.flip()
 
     pygame.quit()
 
+def validInput(text):
+    if text == "":
+        return False
+    
+    for i in text:
+        if not (i in ["0","1","2","3","4","5","6","7","8","9"]):
+            return False
+    
+    return True
+
+def isInOrder(items,text):
+    if items[len(items) - 1] < int(text):
+        return True
+    else:
+        return False
+ 
+def isValidSim(currentSimulation,items):
+    if currentSimulation == "BINSEARCH":
+        if not BinarySearch.isInOrder(items):
+            print("List not in order would you like to sort")
+            return False
+        
+    
+    return True
+
 def drawItems(items,searched = []):
+    searchCopy = searched.copy()
     numOfItems = len(items)
     itemWidth = 100
     itemHeight = 100
@@ -58,8 +142,9 @@ def drawItems(items,searched = []):
     startingX = (SCREEN_WIDTH - ((itemWidth + spacing) * numOfItems)) // 2
     for i in range(numOfItems):
         rect = pygame.Rect(startingX + ((itemWidth + spacing) * i),(SCREEN_HEIGHT - itemHeight) // 2, itemWidth,itemHeight)
-        if items[i] in searched:
+        if items[i] in searchCopy:
             pygame.draw.rect(screen,(0,255,0),rect,border_radius=20)
+            searchCopy.remove(items[i])
         else:
             pygame.draw.rect(screen,(0,0,0),rect,border_radius=20)
         draw_text(str(items[i]),(255,255,255),rect)
@@ -76,5 +161,11 @@ def draw_text(text,colour,rect,alignment="centre"):
 
     screen.blit(text_surface, text_rect)
 
+def drawTextBox(textSoFar,x,y,text):
+    newRect = pygame.Rect(x,y,200,30)
+    textRect = pygame.Rect(x,y - 24 ,200,24)
+    pygame.draw.rect(screen,(50,50,50),newRect)
+    draw_text(textSoFar,(255,255,255),newRect,"left")
+    draw_text(text,(255,255,255),textRect)
 
 start()
