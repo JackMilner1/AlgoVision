@@ -3,6 +3,7 @@ import SearchingAlgorithms.BinarySearch as BinarySearch
 import SearchingAlgorithms.LinearSearch as LinearSearch
 import UIUtils.Buttons as Buttons
 import UIUtils.Timer as Delay
+import SortingAlgorithms.BubbleSort as BubbleSort
 import os 
 
 pygame.init()
@@ -21,9 +22,10 @@ def start():
 
     itemToSearch = 7
 
-    items = [1,4,6,7,9,12,13,16,70,104,108]
-    solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
-    #solution = LinearSearch.LinearSearch(items,70)
+    items = []
+    itemsList = []
+    #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+    solution = LinearSearch.LinearSearch(items,itemToSearch)
     currentStep = 0
     indexOfAns = solution[0]
     steps = solution[1]
@@ -31,14 +33,16 @@ def start():
     delayTimer.start()
 
     warningButton = Buttons.Button(SCREEN_WIDTH * 0.48, SCREEN_HEIGHT * 0.16,70,70,(43,43,55),"Preconditions not met for search")
-    searchItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7 + 100,90,90,(35, 35, 38),"Search Item")
-    addItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Add Item")
     runButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7 - 100,90,90,(35, 35, 38),"Run")
+    addItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Add Item")
+    searchItemButton = Buttons.Button(SCREEN_WIDTH * 0.85 + 100,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Search Item")
+    sortItemsButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7+100,90,90,(35, 35, 38),"Sort Items")
 
     text = ""
-    runningSimulation = False
-    currentSimulation = "BINSEARCH" # options = BINSEARCH,LINSEARCH,MERGESORT,BUBBLESORT,QUICKSORT
-    canRunSim = True
+    runningSearchSimulation = False
+    runningSortSimulation = False
+    currentSimulation = "LINSEARCH" # options = BINSEARCH,LINSEARCH,MERGESORT,BUBBLESORT,QUICKSORT
+    canRunSim = isValidSim(currentSimulation,items)
 
     while running:
         for event in pygame.event.get():        
@@ -57,9 +61,9 @@ def start():
         if addItemButton.drawButton(screen):
             if validInput(text):
                 items.append(int(text))
-                runningSimulation = False
-                solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
-                #solution = LinearSearch.LinearSearch(items,70)
+                runningSearchSimulation = False
+                #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+                solution = LinearSearch.LinearSearch(items,itemToSearch)
                 indexOfAns = solution[0]
                 steps = solution[1]
                 canRunSim = isValidSim(currentSimulation,items)
@@ -69,20 +73,37 @@ def start():
         if searchItemButton.drawButton(screen):
             if validInput(text):
                 itemToSearch = int(text)
-                runningSimulation = False
-                solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+                runningSearchSimulation = False
+                #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+                solution = LinearSearch.LinearSearch(items,itemToSearch)
                 indexOfAns = solution[0]
                 steps = solution[1]
             text = ""
-        
+    
+
         if runButton.drawButton(screen) and canRunSim:
-            runningSimulation = True
+            runningSearchSimulation = True
             currentStep = 0
+            #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
+            solution = LinearSearch.LinearSearch(items,itemToSearch)
+            indexOfAns = solution[0]
+            steps = solution[1]
             delayTimer.reset(1)
 
-        if runningSimulation and canRunSim:
+        if sortItemsButton.drawButton(screen):
+            runningSearchSimulation = False
+            runningSortSimulation = True
+            currentStep = 0
+            itemsList, steps = BubbleSort.BubbleSort(items)
+
+        if (runningSearchSimulation and canRunSim) or runningSortSimulation:
 
             delayTimer.update()
+
+            if runningSortSimulation:
+                if not canRunSim:
+                    warningButton.drawButton(screen,(255,0,0))
+                items = itemsList[currentStep]
 
             if delayTimer.timeRanOut and currentStep + 1 < len(steps) and currentStep != -1:
                 currentStep += 1
@@ -90,17 +111,20 @@ def start():
             elif delayTimer.timeRanOut and currentStep + 1 == len(steps):
                 delayTimer.timeout()
                 currentStep = -1
-                runningSimulation = False
+                runningSearchSimulation = False
+                if runningSortSimulation:
+                    runningSortSimulation = False
+                    itemsList = []
+                    canRunSim = True
 
-            if currentStep != -1:
+            if currentStep != -1 and len(items) > 0:
                 drawItems(items,steps[currentStep])
-
         elif not canRunSim:
             warningButton.drawButton(screen,(255,0,0))
-            runningSimulation = False
+            runningSearchSimulation = False
             drawItems(items)
         else:
-            runningSimulation = False
+            runningSearchSimulation = False
             drawItems(items)
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
@@ -129,8 +153,10 @@ def isValidSim(currentSimulation,items):
         if not BinarySearch.isInOrder(items):
             print("List not in order would you like to sort")
             return False
+    if currentSimulation == "LINSEARCH":
+        if len(items) == 0:
+            return False
         
-    
     return True
 
 def drawItems(items,searched = []):

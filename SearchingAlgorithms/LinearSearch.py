@@ -1,11 +1,12 @@
 def LinearSearch(items,itemToFind):
     steps = []
-    for i in range(len(items)):
-        item = items[i]
-        steps = steps + [items[:i]]
-        
-        if item == itemToFind:
-            return i,steps + [items[:i+1]] + [[itemToFind]]
+    if len(items) > 0:
+        for i in range(len(items)):
+            item = items[i]
+            steps = steps + [items[:i]]
+            
+            if item == itemToFind:
+                return i,steps + [items[:i+1]] + [[itemToFind]]
 
     return -1,steps
 

@@ -2,7 +2,7 @@ def BinarySearch(items,itemToFind,start,end):
     steps = []
 
     steps.append(items[start:end])
-    if end - start == 1:
+    if end - start <= 1:
         return -1,steps
     
     index = (start + end) // 2

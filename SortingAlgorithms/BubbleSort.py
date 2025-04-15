@@ -1,5 +1,6 @@
 
 def BubbleSort(items):
+    itemsTracker = []
     steps = []
     for i in range(len(items)):
         currentIndex = 0
@@ -7,6 +8,7 @@ def BubbleSort(items):
 
         for j in range(len(items) - 1):
             nextIndex = currentIndex + 1
+            itemsTracker = itemsTracker + [items.copy()]
             steps = steps + [items[currentIndex :nextIndex + 1]]
             if items[currentIndex] >= items[nextIndex]:
                 placeholder = items[currentIndex]
@@ -15,11 +17,11 @@ def BubbleSort(items):
                 numSwaps += 1
 
             currentIndex += 1
+            itemsTracker = itemsTracker + [items.copy()]
             steps = steps + [items[currentIndex - 1 :nextIndex + 1]]
 
         if numSwaps == 0:
             break
 
-    return steps
+    return itemsTracker,steps
 
-print(BubbleSort([1,3,4,2,6,9,10,21,14,28]))
