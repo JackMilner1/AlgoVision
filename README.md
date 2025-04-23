@@ -42,7 +42,7 @@ Common datastructures
 * Binary Tree ✅
 ### 
 Sorts
-* Bubble sort
+* Bubble sort ✅
 * Merge sort
 * Quicksort
 ### 
