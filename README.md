@@ -32,7 +32,7 @@ Graphs
 ### 
 Queues
 * Priority queues ✅
-* Circular queues 
+* Circular queues
 * FIFO queue
 * LIFO queue (Stack) ✅
 ### 
@@ -42,8 +42,8 @@ Common datastructures
 * Binary Tree ✅
 ### 
 Sorts
-* Bubble sort
-* Merge sort
+* Bubble sort ✅
+* Merge sort 
 * Quicksort
 ### 
 Searching
