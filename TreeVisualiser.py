@@ -66,6 +66,7 @@ def manageScreenClick(nodes,nodeFromSelected,mode):
     x = coords[0] - 50
     y = coords[1] - 50
     canPlace = True
+    alreadyDeleting = False
     for node in nodes:
         if (x - 100 < node.x < x + 100) and (y - 100 < node.y < y + 100) and mode == "ADD":
             canPlace = False
@@ -77,10 +78,9 @@ def manageScreenClick(nodes,nodeFromSelected,mode):
                 nodeFromSelected = None
             break
         else:
-            if mode == "DEL" and ((x - 100 < node.x < x + 100) and (y - 100 < node.y < y + 100)):
-                print("in")
+            if mode == "DEL" and ((x - 100 < node.x < x + 100) and (y - 100 < node.y < y + 100)) and not alreadyDeleting:
+                alreadyDeleting = True
                 target = (node.x,node.y)
-                print(f"coords: {(node.x,node.y)}" )
                 nodes.remove(node)
                 cleanup(nodes,target)
   
@@ -94,12 +94,9 @@ def manageScreenClick(nodes,nodeFromSelected,mode):
 def cleanup(nodes,target):
     for node in nodes:
         for i in node.edges:
-            print(node.id)
             xToo = i.xyToo[0] - 50
             yToo = i.xyToo[1] - 50
-            print((xToo,yToo))
             if (xToo,yToo) == target:
-                print("connection")
                 node.edges.remove(i)
 
 
