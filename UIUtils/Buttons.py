@@ -1,12 +1,13 @@
 import pygame
 
 class Button():
-    def __init__(self,x, y,width,height,colour,text=""):
+    def __init__(self,x, y,width,height,colour,text="",fontSize=24):
         self.colour = colour
         self.text = text
         self.rect = pygame.Rect(x,y,width,height)
         self.rect.topleft = (x,y)
         self.clicked = False
+        self.fontSize = fontSize
         self.x = x
         self.y = y
 
@@ -32,7 +33,7 @@ class Button():
     
     def draw_text(self,screen, text,colour):
         text_color = colour
-        font = pygame.font.Font(None, 24)
+        font = pygame.font.Font(None, self.fontSize)
         text_surface = font.render(text, True, text_color)
         text_rect = text_surface.get_rect(center=self.rect.center)
         screen.blit(text_surface, text_rect)
