@@ -33,8 +33,8 @@ def mainMenu():
     btnWidth = 250
     btnHeight = 75
     titleButton = Buttons.Button((SCREEN_WIDTH - ((SCREEN_WIDTH) * 0.5)) * 0.5,(SCREEN_HEIGHT - 150) * 0.25,((SCREEN_WIDTH) * 0.5),150,(43,43,55),"Algovision",128)
-    startButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.6,btnWidth,btnHeight,(81,81,88),"Start")
-    quitButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.6 + 75 + 40,btnWidth,btnHeight,(81,81,88),"Quit")
+    startButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5,btnWidth,btnHeight,(81,81,88),"Start")
+    quitButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75 + 40,btnWidth,btnHeight,(81,81,88),"Quit")
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -43,15 +43,50 @@ def mainMenu():
         screen.fill((43,43,55))
         titleButton.drawButton(screen)
 
-        if startButton.drawButton(screen):
-            print("start")
-
         if quitButton.drawButton(screen):
             running = False
+
+        if startButton.drawButton(screen):
+            running = algoSelect()[0]
 
         pygame.display.flip()
 
 
     return running,0
     
+def algoSelect():
+    running = True
+    btnWidth = 250
+    btnHeight = 75
+
+    titleButton = Buttons.Button((SCREEN_WIDTH - ((SCREEN_WIDTH) * 0.5)) * 0.5,(SCREEN_HEIGHT - 150) * 0.25,((SCREEN_WIDTH) * 0.5),150,(43,43,55),"Select Topic",128)
+    graphButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 - 37,btnWidth,btnHeight,(81,81,88),"Graphs")
+    queuesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 - 37,btnWidth,btnHeight,(81,81,88),"Queues")
+    sortButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75,btnWidth,btnHeight,(81,81,88),"Sort")
+    treesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + +75,btnWidth,btnHeight,(81,81,88),"Trees")
+
+    backButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.97,(SCREEN_HEIGHT - btnHeight) * 0.9,btnWidth,btnHeight,(81,81,88),"Back")
+
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                return running,0
+
+        screen.fill((43,43,55)) 
+
+        titleButton.drawButton(screen)
+        graphButton.drawButton(screen)
+        queuesButton.drawButton(screen)
+        sortButton.drawButton(screen)
+        treesButton.drawButton(screen)
+
+        if backButton.drawButton(screen):
+            running = False
+
+        pygame.display.flip()
+
+
+    return True,0
+
 start()
