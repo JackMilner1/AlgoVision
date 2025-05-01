@@ -1,16 +1,13 @@
 import pygame
-import os 
 import UIUtils.Buttons as Button
 import QueueTypes.Stack as Stack
 import UIUtils.Timer as Timer
+import Globals
 
 pygame.init()
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'
-info = pygame.display.Info()
-
-SCREEN_WIDTH = info.current_w
-SCREEN_HEIGHT = info.current_h
+SCREEN_WIDTH = Globals.SCREEN_WIDTH
+SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 
 STACK_UI_LENGTH = 400
 STACK_UI_HEIGHT = 600
@@ -19,7 +16,7 @@ BOARD_START_X = int((SCREEN_WIDTH - STACK_UI_LENGTH) / 2)
 BOARD_START_Y = int((SCREEN_HEIGHT - STACK_UI_HEIGHT) / 2) 
 thicknessOfUI = 50
 
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT- 50),pygame.RESIZABLE)
+screen = Globals.screen
 pygame.display.set_caption('Play')
 
 def start():
@@ -28,6 +25,7 @@ def start():
     pushButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5,90,90,(35, 35, 38),"Push")
     popButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Pop")
     resetButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5 + (95 * 2),90,90,(35, 35, 38),"Reset")
+    backButton = Button.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
     warningTimer = Timer.Timer(8)
     stack = Stack.Stack()
     text = ""
@@ -36,6 +34,7 @@ def start():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                return False,False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
@@ -74,9 +73,11 @@ def start():
                 #print("Stack Underflow!")
                 warningButton.changeText("Stack Underflow!")
                 warningTimer.reset(3)
+
+        if backButton.drawButton(screen):
+            running = False
         pygame.display.flip()
-        
-    pygame.quit()
+    return True,False
 
 def drawStackUI():
     pygame.draw.rect(screen,(0,0,0),(BOARD_START_X,BOARD_START_Y,thicknessOfUI,STACK_UI_HEIGHT))
@@ -121,5 +122,3 @@ def drawTextBox(textSoFar):
     pygame.draw.rect(screen,(50,50,50),newRect)
     draw_text(textSoFar,(255,255,255),newRect,"left")
     draw_text("Text to push to stack: ",(255,255,255),textRect)
-
-start()

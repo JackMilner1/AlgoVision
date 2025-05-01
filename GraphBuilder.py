@@ -1,20 +1,17 @@
 import pygame
-import os
 import GraphClasses as graph
 import UIUtils.GraphUIUtils as utils
 import ShortestPathAlgorithms.Dijkstras as Dijkstras
 import MazeGeneration.MazeGenerationStack as MazeGenerationStack
 import UIUtils.Buttons as Button
+import Globals
 
 pygame.init()
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'
-info = pygame.display.Info()
+SCREEN_WIDTH = Globals.SCREEN_WIDTH
+SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 
-SCREEN_WIDTH = info.current_w
-SCREEN_HEIGHT = info.current_h
-
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT- 50),pygame.RESIZABLE)
+screen = Globals.screen
 pygame.display.set_caption('Play')
 
 boardWidth = 40
@@ -55,6 +52,7 @@ def start():
     runButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 3)),90,90,(35, 35, 38),"Run")
     resetButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 6)),90,90,(35, 35, 38),"Reset")
     genButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 9)),90,90,(35, 35, 38),"Gen Maze")
+    backButton = Button.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
 
     while running:
         # poll for events
@@ -63,6 +61,7 @@ def start():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                return False,False
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill((43,43,55))
@@ -110,9 +109,12 @@ def start():
             MazeGenerationStack.generateMaze(newGraph,0)
 
         # flip() the display to put your work on screen
-        pygame.display.flip()
 
-    pygame.quit()
+        if backButton.drawButton(screen):
+            running = False
+
+        pygame.display.flip()
+    return True,False
 
 def euclideanDistance(square1,sqaure2):
     widthOne,heightOne = convertToXY(square1)
@@ -141,5 +143,3 @@ def reset():
     for i in graphUI:
         vertex = i.getClass()
         vertex.reset()
-
-start()

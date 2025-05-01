@@ -1,17 +1,14 @@
 import pygame
-import os 
 import GraphClasses
 import UIUtils.Buttons as Button
+import Globals
 
 pygame.init()
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'
-info = pygame.display.Info()
+SCREEN_WIDTH = Globals.SCREEN_WIDTH
+SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 
-SCREEN_WIDTH = info.current_w
-SCREEN_HEIGHT = info.current_h
-
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT- 50),pygame.RESIZABLE)
+screen = Globals.screen
 pygame.display.set_caption('Play')
 
 def start():
@@ -24,11 +21,13 @@ def start():
     resetButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + (95 * 2),90,90,(35, 35, 38),"Reset")
     modeButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Mode: Add")
     newestButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5,90,90,(35, 35, 38),"Run")
+    backButton = Button.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
     mode = "ADD"
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                return False,False
 
         screen.fill((43,43,55))
 
@@ -57,9 +56,14 @@ def start():
             pass
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
+
+        if backButton.drawButton(screen):
+            running = False
+
         pygame.display.flip() 
 
-    pygame.quit()
+    return True,False
+    
 
 def manageScreenClick(nodes,nodeFromSelected,mode):
     coords = pygame.mouse.get_pos()
@@ -98,6 +102,3 @@ def cleanup(nodes,target):
             yToo = i.xyToo[1] - 50
             if (xToo,yToo) == target:
                 node.edges.remove(i)
-
-
-start()

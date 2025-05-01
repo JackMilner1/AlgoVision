@@ -4,17 +4,14 @@ import SearchingAlgorithms.LinearSearch as LinearSearch
 import UIUtils.Buttons as Buttons
 import UIUtils.Timer as Delay
 import SortingAlgorithms.BubbleSort as BubbleSort
-import os 
+import Globals
 
 pygame.init()
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'
-info = pygame.display.Info()
+SCREEN_WIDTH = Globals.SCREEN_WIDTH
+SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 
-SCREEN_WIDTH = info.current_w
-SCREEN_HEIGHT = info.current_h
-
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT- 50),pygame.RESIZABLE)
+screen = Globals.screen
 pygame.display.set_caption('Play')
 
 def start():
@@ -37,6 +34,7 @@ def start():
     addItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Add Item")
     searchItemButton = Buttons.Button(SCREEN_WIDTH * 0.85 + 100,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Search Item")
     sortItemsButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7+100,90,90,(35, 35, 38),"Sort Items")
+    backButton = Buttons.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
 
     text = ""
     runningSearchSimulation = False
@@ -48,6 +46,7 @@ def start():
         for event in pygame.event.get():        
             if event.type == pygame.QUIT:
                 running = False
+                return False,False
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_BACKSPACE:
                     text = text[:-1]
@@ -128,9 +127,12 @@ def start():
             drawItems(items)
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
-        pygame.display.flip()
 
-    pygame.quit()
+        if backButton.drawButton(screen):
+            running = False
+
+        pygame.display.flip()
+    return True,False
 
 def validInput(text):
     if text == "":
@@ -193,5 +195,3 @@ def drawTextBox(textSoFar,x,y,text):
     pygame.draw.rect(screen,(50,50,50),newRect)
     draw_text(textSoFar,(255,255,255),newRect,"left")
     draw_text(text,(255,255,255),textRect)
-
-start()

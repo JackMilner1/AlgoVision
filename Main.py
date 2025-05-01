@@ -1,16 +1,17 @@
 import pygame
 import UIUtils.Buttons as Buttons
-import os 
+import GraphBuilder
+import SortSearchVisualiser
+import StackVisualiser
+import TreeVisualiser
+import Globals
 
 pygame.init()
 
-os.environ['SDL_VIDEO_CENTERED'] = '1'
-info = pygame.display.Info()
+SCREEN_WIDTH = Globals.SCREEN_WIDTH
+SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 
-SCREEN_WIDTH = info.current_w
-SCREEN_HEIGHT = info.current_h
-
-screen = pygame.display.set_mode((SCREEN_WIDTH,SCREEN_HEIGHT- 50),pygame.RESIZABLE)
+screen = Globals.screen
 pygame.display.set_caption('Menu')
 
 def start():
@@ -35,6 +36,7 @@ def mainMenu():
     titleButton = Buttons.Button((SCREEN_WIDTH - ((SCREEN_WIDTH) * 0.5)) * 0.5,(SCREEN_HEIGHT - 150) * 0.25,((SCREEN_WIDTH) * 0.5),150,(43,43,55),"Algovision",128)
     startButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5,btnWidth,btnHeight,(81,81,88),"Start")
     quitButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75 + 40,btnWidth,btnHeight,(81,81,88),"Quit")
+    inSelect = False
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -46,8 +48,8 @@ def mainMenu():
         if quitButton.drawButton(screen):
             running = False
 
-        if startButton.drawButton(screen):
-            running = algoSelect()[0]
+        if startButton.drawButton(screen) or inSelect:
+            running,inSelect = algoSelect()
 
         pygame.display.flip()
 
@@ -65,7 +67,7 @@ def algoSelect():
     sortButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75,btnWidth,btnHeight,(81,81,88),"Sort")
     treesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + +75,btnWidth,btnHeight,(81,81,88),"Trees")
 
-    backButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.97,(SCREEN_HEIGHT - btnHeight) * 0.9,btnWidth,btnHeight,(81,81,88),"Back")
+    backButton = Buttons.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
 
     while running:
         for event in pygame.event.get():
@@ -76,10 +78,15 @@ def algoSelect():
         screen.fill((43,43,55)) 
 
         titleButton.drawButton(screen)
-        graphButton.drawButton(screen)
-        queuesButton.drawButton(screen)
-        sortButton.drawButton(screen)
-        treesButton.drawButton(screen)
+        
+        if graphButton.drawButton(screen):
+            return GraphBuilder.start()
+        if queuesButton.drawButton(screen):
+            return SortSearchVisualiser.start()
+        if sortButton.drawButton(screen):
+            return SortSearchVisualiser.start()
+        if treesButton.drawButton(screen):
+            return TreeVisualiser.start()
 
         if backButton.drawButton(screen):
             running = False
@@ -87,6 +94,6 @@ def algoSelect():
         pygame.display.flip()
 
 
-    return True,0
+    return True,False
 
 start()
