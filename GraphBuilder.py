@@ -5,6 +5,7 @@ import ShortestPathAlgorithms.Dijkstras as Dijkstras
 import MazeGeneration.MazeGenerationStack as MazeGenerationStack
 import UIUtils.Buttons as Button
 import Globals
+import UIUtils.Timer as Delay
 
 pygame.init()
 
@@ -42,7 +43,7 @@ def drawSquares():
             #draw_text(str(allVertices[index].getID()),rect)
             #draw_text(str(allVertices[index].getNeighbours()),pygame.Rect(boardx + (SPACING * j),boardy + (SPACING * i) + 20,SQUARE_SIZE,SQUARE_SIZE))
              
-def start():
+def start(clickDelay = 0.2):
     running = True
     graphChanged = True
     runningSimulation = False
@@ -52,7 +53,10 @@ def start():
     runButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 3)),90,90,(35, 35, 38),"Run")
     resetButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 6)),90,90,(35, 35, 38),"Reset")
     genButton = Button.Button(BOARD_START_X + ((SQUARE_SIZE+SPACING) * boardWidth) + 20, BOARD_START_Y + ((SQUARE_SIZE+SPACING) * (boardHeight - 9)),90,90,(35, 35, 38),"Gen Maze")
-    backButton = Button.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
+    backButton = Button.Button((SCREEN_WIDTH - 70) * 0.97,(SCREEN_HEIGHT - 70) * 0.9,70,70,(81,81,88),"Back")
+
+    pageClickDelay = Delay.Timer(clickDelay)
+    pageClickDelay.start()
 
     while running:
         # poll for events
@@ -62,6 +66,9 @@ def start():
             if event.type == pygame.QUIT:
                 running = False
                 return False,False
+            
+        pageClickDelay.update()
+        canClickPage = pageClickDelay.timeRanOut
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill((43,43,55))
@@ -89,19 +96,19 @@ def start():
                 for i in path:
                     i.isPath = True
 
-        if runButton.drawButton(screen):
+        if runButton.drawButton(screen) and canClickPage:
             if start != None and goal != None:
                 runningSimulation = True
             else:
                 print("need start and end to run")
 
-        if resetButton.drawButton(screen):
+        if resetButton.drawButton(screen) and canClickPage:
             runningSimulation = False
             start = None
             goal = None
             reset()
 
-        if genButton.drawButton(screen):
+        if genButton.drawButton(screen) and canClickPage:
             runningSimulation = False
             start = None
             goal = None
@@ -110,10 +117,11 @@ def start():
 
         # flip() the display to put your work on screen
 
-        if backButton.drawButton(screen):
+        if backButton.drawButton(screen) and canClickPage:
             running = False
 
         pygame.display.flip()
+        
     return True,False
 
 def euclideanDistance(square1,sqaure2):

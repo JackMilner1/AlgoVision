@@ -2,7 +2,7 @@ import pygame
 import GraphClasses
 import UIUtils.Buttons as Button
 import Globals
-
+import UIUtils.Timer as Delay
 pygame.init()
 
 SCREEN_WIDTH = Globals.SCREEN_WIDTH
@@ -11,7 +11,7 @@ SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 screen = Globals.screen
 pygame.display.set_caption('Play')
 
-def start():
+def start(clickDelay = 0.2):
     running = True
     nodes = []
 
@@ -21,17 +21,24 @@ def start():
     resetButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + (95 * 2),90,90,(35, 35, 38),"Reset")
     modeButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Mode: Add")
     newestButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5,90,90,(35, 35, 38),"Run")
-    backButton = Button.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
+    backButton = Button.Button((SCREEN_WIDTH - 70) * 0.97,(SCREEN_HEIGHT - 70) * 0.9,70,70,(81,81,88),"Back")
     mode = "ADD"
+
+    pageClickDelay = Delay.Timer(clickDelay)
+    pageClickDelay.start()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 return False,False
+            
+        pageClickDelay.update()
+        canClickPage = pageClickDelay.timeRanOut
 
         screen.fill((43,43,55))
 
-        if screenClickArea.drawButton(screen):
+        if screenClickArea.drawButton(screen) and canClickPage:
             nodeFromSelected = manageScreenClick(nodes,nodeFromSelected,mode)
          
         
@@ -41,10 +48,10 @@ def start():
         for node in nodes:
             node.drawNode(screen)
 
-        if resetButton.drawButton(screen):
+        if resetButton.drawButton(screen) and canClickPage:
             nodes = []
 
-        if modeButton.drawButton(screen):
+        if modeButton.drawButton(screen) and canClickPage:
             if mode == "ADD":
                 modeButton.changeText("Mode: Del")
                 mode = "DEL"
@@ -52,7 +59,7 @@ def start():
                 modeButton.changeText("Mode: Add")
                 mode = "ADD"
         
-        if newestButton.drawButton(screen):
+        if newestButton.drawButton(screen) and canClickPage:
             pass
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))

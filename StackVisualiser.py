@@ -19,16 +19,19 @@ thicknessOfUI = 50
 screen = Globals.screen
 pygame.display.set_caption('Play')
 
-def start():
+def start(clickDelay = 0.2):
     running = True
     warningButton = Button.Button(SCREEN_WIDTH * 0.48, SCREEN_HEIGHT * 0.16,70,70,(43,43,55),"")
     pushButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5,90,90,(35, 35, 38),"Push")
     popButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Pop")
     resetButton = Button.Button(SCREEN_WIDTH * 0.7, SCREEN_HEIGHT * 0.5 + (95 * 2),90,90,(35, 35, 38),"Reset")
-    backButton = Button.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
+    backButton = Button.Button((SCREEN_WIDTH - 70) * 0.97,(SCREEN_HEIGHT - 70) * 0.9,70,70,(81,81,88),"Back")
     warningTimer = Timer.Timer(8)
     stack = Stack.Stack()
     text = ""
+
+    pageClickDelay = Timer.Timer(clickDelay)
+    pageClickDelay.start()
 
     while running:
         for event in pygame.event.get():
@@ -40,6 +43,9 @@ def start():
                     text = text[:-1]
                 else:
                     text += event.unicode
+
+        pageClickDelay.update()
+        canClickPage = pageClickDelay.timeRanOut
 
 
         screen.fill((43,43,55))
@@ -55,7 +61,7 @@ def start():
         for i in range(stack.howManyItems()):
             drawItemInStack(i,stack)
 
-        if pushButton.drawButton(screen):
+        if pushButton.drawButton(screen) and canClickPage:
             if stack.howManyItems() < stack.maxItems():
                 stack.push(text)
                 text = ""
@@ -63,10 +69,10 @@ def start():
                 #print("Stack Overflow!")
                 warningButton.changeText("Stack Overflow!")
                 warningTimer.reset(3)
-        if resetButton.drawButton(screen):
+        if resetButton.drawButton(screen) and canClickPage:
             text = ""
             stack.clear()
-        if popButton.drawButton(screen):
+        if popButton.drawButton(screen) and canClickPage:
             if not stack.isEmpty():
                 stack.pop()
             else: 
@@ -74,7 +80,7 @@ def start():
                 warningButton.changeText("Stack Underflow!")
                 warningTimer.reset(3)
 
-        if backButton.drawButton(screen):
+        if backButton.drawButton(screen) and canClickPage:
             running = False
         pygame.display.flip()
     return True,False

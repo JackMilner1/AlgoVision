@@ -5,6 +5,7 @@ import SortSearchVisualiser
 import StackVisualiser
 import TreeVisualiser
 import Globals
+import UIUtils.Timer as Delay
 
 pygame.init()
 
@@ -14,7 +15,7 @@ SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 screen = Globals.screen
 pygame.display.set_caption('Menu')
 
-def start():
+def start(clickDelay = 0.2):
 
     running,option = mainMenu()
 
@@ -29,7 +30,7 @@ def start():
 
     pygame.quit()
 
-def mainMenu():
+def mainMenu(clickDelay = 0.2):
     running = True
     btnWidth = 250
     btnHeight = 75
@@ -37,26 +38,34 @@ def mainMenu():
     startButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5,btnWidth,btnHeight,(81,81,88),"Start")
     quitButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75 + 40,btnWidth,btnHeight,(81,81,88),"Quit")
     inSelect = False
+
+    pageClickDelay = Delay.Timer(clickDelay)
+    pageClickDelay.start()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
+        pageClickDelay.update()
+        canClickPage = pageClickDelay.timeRanOut
+
         screen.fill((43,43,55))
         titleButton.drawButton(screen)
 
-        if quitButton.drawButton(screen):
+        if quitButton.drawButton(screen) and canClickPage:
             running = False
 
-        if startButton.drawButton(screen) or inSelect:
+        if (startButton.drawButton(screen) or inSelect)  and canClickPage:
             running,inSelect = algoSelect()
+            pageClickDelay.reset(clickDelay)
 
         pygame.display.flip()
 
 
     return running,0
     
-def algoSelect():
+def algoSelect(clickDelay = 0.2):
     running = True
     btnWidth = 250
     btnHeight = 75
@@ -69,26 +78,38 @@ def algoSelect():
 
     backButton = Buttons.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
 
+    pageClickDelay = Delay.Timer(clickDelay)
+    pageClickDelay.start()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-                return running,0
+                return running,False
+            
+        pageClickDelay.update()
+        canClickPage = pageClickDelay.timeRanOut
 
         screen.fill((43,43,55)) 
 
         titleButton.drawButton(screen)
         
-        if graphButton.drawButton(screen):
-            return GraphBuilder.start()
-        if queuesButton.drawButton(screen):
-            return SortSearchVisualiser.start()
-        if sortButton.drawButton(screen):
-            return SortSearchVisualiser.start()
-        if treesButton.drawButton(screen):
-            return TreeVisualiser.start()
+        if graphButton.drawButton(screen) and canClickPage:
+            running = GraphBuilder.start()[0]
+            pageClickDelay.reset(clickDelay)
+        if queuesButton.drawButton(screen) and canClickPage:
+            running = SortSearchVisualiser.start()[0]
+            pageClickDelay.reset(clickDelay)
+        if sortButton.drawButton(screen) and canClickPage:
+            running = SortSearchVisualiser.start()[0]
+            pageClickDelay.reset(clickDelay)
+        if treesButton.drawButton(screen) and canClickPage:
+            running = TreeVisualiser.start()[0]
+            pageClickDelay.reset(clickDelay)
 
-        if backButton.drawButton(screen):
+        canClickPage = pageClickDelay.timeRanOut
+
+        if backButton.drawButton(screen) and canClickPage:
             running = False
 
         pygame.display.flip()

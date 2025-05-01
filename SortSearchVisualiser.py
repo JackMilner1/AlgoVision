@@ -14,7 +14,7 @@ SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 screen = Globals.screen
 pygame.display.set_caption('Play')
 
-def start():
+def start(clickDelay = 0.2):
     running = True
 
     itemToSearch = 7
@@ -34,13 +34,16 @@ def start():
     addItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Add Item")
     searchItemButton = Buttons.Button(SCREEN_WIDTH * 0.85 + 100,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Search Item")
     sortItemsButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7+100,90,90,(35, 35, 38),"Sort Items")
-    backButton = Buttons.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
+    backButton = Buttons.Button((SCREEN_WIDTH - 70) * 0.97,(SCREEN_HEIGHT - 70) * 0.9,70,70,(81,81,88),"Back")
 
     text = ""
     runningSearchSimulation = False
     runningSortSimulation = False
     currentSimulation = "LINSEARCH" # options = BINSEARCH,LINSEARCH,MERGESORT,BUBBLESORT,QUICKSORT
     canRunSim = isValidSim(currentSimulation,items)
+
+    pageClickDelay = Delay.Timer(clickDelay)
+    pageClickDelay.start()
 
     while running:
         for event in pygame.event.get():        
@@ -53,11 +56,14 @@ def start():
                 else:
                     text += event.unicode
 
+        pageClickDelay.update()
+        canClickPage = pageClickDelay.timeRanOut
+
         screen.fill((43,43,55))
 
         drawTextBox(text,(SCREEN_WIDTH-200) * 0.5 , (SCREEN_HEIGHT-30) * 0.6,f"Add/search for item (current is {itemToSearch}): ")
 
-        if addItemButton.drawButton(screen):
+        if addItemButton.drawButton(screen) and canClickPage:
             if validInput(text):
                 items.append(int(text))
                 runningSearchSimulation = False
@@ -69,7 +75,7 @@ def start():
 
             text = ""
 
-        if searchItemButton.drawButton(screen):
+        if searchItemButton.drawButton(screen) and canClickPage:
             if validInput(text):
                 itemToSearch = int(text)
                 runningSearchSimulation = False
@@ -80,7 +86,7 @@ def start():
             text = ""
     
 
-        if runButton.drawButton(screen) and canRunSim:
+        if runButton.drawButton(screen) and canRunSim and canClickPage:
             runningSearchSimulation = True
             currentStep = 0
             #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
@@ -89,7 +95,7 @@ def start():
             steps = solution[1]
             delayTimer.reset(1)
 
-        if sortItemsButton.drawButton(screen):
+        if sortItemsButton.drawButton(screen) and canClickPage:
             runningSearchSimulation = False
             runningSortSimulation = True
             currentStep = 0
@@ -128,10 +134,11 @@ def start():
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
 
-        if backButton.drawButton(screen):
+        if backButton.drawButton(screen) and canClickPage:
             running = False
 
         pygame.display.flip()
+        
     return True,False
 
 def validInput(text):
