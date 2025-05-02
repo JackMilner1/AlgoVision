@@ -115,6 +115,7 @@ class VertexGeometry(Vertex):
         super().__init__(id, isWall)
         self.x = x
         self.y = y
+        self.connections = []
 
     def drawNode(self,screen):
         x,y = self.x,self.y
@@ -128,6 +129,7 @@ class VertexGeometry(Vertex):
             edge.drawEdge()
             
     def addEdge(self,screen, node2):
+        self.connections = self.connections + [node2]
         newEdge = EdgeGeometry(screen,(0,0,0),(self.x + 50 ,self.y + 50), (node2.x + 50,node2.y + 50),width=10)
         self.edges.append(newEdge)
 

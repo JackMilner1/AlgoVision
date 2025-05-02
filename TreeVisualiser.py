@@ -3,6 +3,7 @@ import GraphClasses
 import UIUtils.Buttons as Button
 import Globals
 import UIUtils.Timer as Delay
+import Traversals.DFS as DFS
 pygame.init()
 
 SCREEN_WIDTH = Globals.SCREEN_WIDTH
@@ -20,7 +21,7 @@ def start(clickDelay = 0.2):
     screenClickArea = Button.Button(0,SCREEN_HEIGHT*0.15,SCREEN_WIDTH*0.85,SCREEN_HEIGHT*0.85,(43,43,55))
     resetButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + (95 * 2),90,90,(35, 35, 38),"Reset")
     modeButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Mode: Add")
-    newestButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5,90,90,(35, 35, 38),"Run")
+    runButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5,90,90,(35, 35, 38),"Run")
     backButton = Button.Button((SCREEN_WIDTH - 70) * 0.97,(SCREEN_HEIGHT - 70) * 0.9,70,70,(81,81,88),"Back")
     mode = "ADD"
 
@@ -59,8 +60,10 @@ def start(clickDelay = 0.2):
                 modeButton.changeText("Mode: Add")
                 mode = "ADD"
         
-        if newestButton.drawButton(screen) and canClickPage:
-            pass
+        if runButton.drawButton(screen) and canClickPage:
+            if len(nodes) > 0:
+                print(nodes[0].id)
+                DFS.DFS(nodes[0])
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
 

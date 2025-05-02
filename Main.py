@@ -106,6 +106,8 @@ def algoSelect(clickDelay = 0.2):
         if treesButton.drawButton(screen) and canClickPage:
             running = TreeVisualiser.start()[0]
             pageClickDelay.reset(clickDelay)
+        if not running:
+            return False,False
 
         canClickPage = pageClickDelay.timeRanOut
 
