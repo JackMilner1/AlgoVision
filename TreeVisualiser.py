@@ -62,7 +62,6 @@ def start(clickDelay = 0.2):
         
         if runButton.drawButton(screen) and canClickPage:
             if len(nodes) > 0:
-                print(nodes[0].id)
                 DFS.DFS(nodes[0])
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))

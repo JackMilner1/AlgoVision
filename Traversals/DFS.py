@@ -6,15 +6,27 @@ import Stack # type: ignore
 
 def DFS(startNode):
     visited = []
-    node = startNode
     stack = Stack.Stack()
-    stack.push(node)
-
     currentNode = startNode
+
     connections = univisitedConnections(currentNode,visited)
-    print(currentNode)
+    stack.push(currentNode)
 
     while not stack.isEmpty():
+        currentNode = stack.pop()
+        connections = univisitedConnections(currentNode,visited)
+        print(currentNode.id)
+
+        if connections != []:
+            stack.push(currentNode)
+            chosenNode = selectRandom(connections)
+            stack.push(chosenNode)
+            currentNode = chosenNode
+        else:
+            visited = visited + [currentNode]
+
+
+    '''while not stack.isEmpty():
 
         while connections != []:
             chosenNode = selectRandom(connections)
@@ -24,7 +36,10 @@ def DFS(startNode):
             print(currentNode.id)
 
         currentNode = stack.pop()
-        connections = univisitedConnections(currentNode,visited)
+        connections = univisitedConnections(currentNode,visited)'''
+    
+
+
             
     return True
 
