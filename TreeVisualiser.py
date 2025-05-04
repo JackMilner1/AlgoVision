@@ -62,6 +62,7 @@ def start(clickDelay = 0.2):
         
         if runButton.drawButton(screen) and canClickPage:
             if len(nodes) > 0:
+                hasCycles(nodes)
                 DFS.DFS(nodes[0])
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
@@ -111,3 +112,15 @@ def cleanup(nodes,target):
             yToo = i.xyToo[1] - 50
             if (xToo,yToo) == target:
                 node.edges.remove(i)
+
+def hasCycles(nodes):
+    incomingEdges = [] + [0] * len(nodes) # array of length len(nodes) that corresponds that has amount of incoming edges for each node
+    for node in nodes:
+        nodesConnections = node.connections
+        for connection in nodesConnections:
+            incomingEdges[nodes.index(connection)] = incomingEdges[nodes.index(connection)] + 1
+            if incomingEdges[nodes.index(connection)] > 1:
+                return False
+
+    print(incomingEdges)
+    return True
