@@ -74,7 +74,8 @@ def algoSelect(clickDelay = 0.2):
     graphButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 - 37,btnWidth,btnHeight,(81,81,88),"Graphs")
     queuesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 - 37,btnWidth,btnHeight,(81,81,88),"Queues")
     sortButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75,btnWidth,btnHeight,(81,81,88),"Sort")
-    treesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + +75,btnWidth,btnHeight,(81,81,88),"Trees")
+    treesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 +75,btnWidth,btnHeight,(81,81,88),"Trees")
+    stackButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5 + (37*3) + 75,btnWidth,btnHeight,(81,81,88),"Stack")
 
     backButton = Buttons.Button((SCREEN_WIDTH - 250) * 0.97,(SCREEN_HEIGHT - 75) * 0.9,250,75,(81,81,88),"Back")
 
@@ -105,6 +106,9 @@ def algoSelect(clickDelay = 0.2):
             pageClickDelay.reset(clickDelay)
         if treesButton.drawButton(screen) and canClickPage:
             running = TreeVisualiser.start()[0]
+            pageClickDelay.reset(clickDelay)
+        if stackButton.drawButton(screen) and canClickPage:
+            running = StackVisualiser.start()[0]
             pageClickDelay.reset(clickDelay)
         if not running:
             return False,False
