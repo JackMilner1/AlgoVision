@@ -96,6 +96,7 @@ def manageScreenClick(nodes,nodeFromSelected,mode):
                 alreadyDeleting = True
                 target = (node.x,node.y)
                 nodes.remove(node)
+                dereferenceNode(nodes,node)
                 cleanup(nodes,target)
   
     if canPlace and mode == "ADD":
@@ -113,6 +114,13 @@ def cleanup(nodes,target):
             if (xToo,yToo) == target:
                 node.edges.remove(i)
 
+def dereferenceNode(nodes,target):
+    for node in nodes:
+        for connection in node.connections:
+            if connection == target:
+                node.connections.remove(target)
+
+
 def hasCycles(nodes):
     incomingEdges = [] + [0] * len(nodes) # array of length len(nodes) that corresponds that has amount of incoming edges for each node
     for node in nodes:
@@ -120,7 +128,5 @@ def hasCycles(nodes):
         for connection in nodesConnections:
             incomingEdges[nodes.index(connection)] = incomingEdges[nodes.index(connection)] + 1
             if incomingEdges[nodes.index(connection)] > 1:
-                return False
-
-    print(incomingEdges)
-    return True
+                return True
+    return False
