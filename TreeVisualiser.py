@@ -17,7 +17,7 @@ def start(clickDelay = 0.2):
     nodes = []
 
     nodeFromSelected = None
-
+    warningButton = Button.Button(SCREEN_WIDTH * 0.48, SCREEN_HEIGHT * 0.16,70,70,(43,43,55),"")
     screenClickArea = Button.Button(0,SCREEN_HEIGHT*0.15,SCREEN_WIDTH*0.85,SCREEN_HEIGHT*0.85,(43,43,55))
     resetButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + (95 * 2),90,90,(35, 35, 38),"Reset")
     modeButton = Button.Button(SCREEN_WIDTH * 0.9, SCREEN_HEIGHT * 0.5 + 95,90,90,(35, 35, 38),"Mode: Add")
@@ -62,8 +62,13 @@ def start(clickDelay = 0.2):
         
         if runButton.drawButton(screen) and canClickPage:
             if len(nodes) > 0:
-                hasCycles(nodes)
-                DFS.DFS(nodes[0])
+                if hasCycles(nodes):
+                    warningButton.changeText("graph contains cycles therefore tree opperation cannot be performed")
+                else:
+                    warningButton.changeText("")
+                    DFS.DFS(nodes[0])
+
+        warningButton.drawButton(screen,(255,0,0))
 
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
 
