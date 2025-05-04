@@ -32,8 +32,8 @@ Graphs
 ### 
 Queues
 * Priority queues ✅
-* Circular queues 
-* FIFO queue
+* Circular queues ✅
+* FIFO queue ✅
 * LIFO queue (Stack) ✅
 ### 
 Common datastructures
@@ -56,6 +56,7 @@ Traversals
 * Pre-order traversal
 * Post-order traversal
 * In-order traversal
+* DFS ✅
 ###
 Maze generation
 * Stack implementation ✅

@@ -16,7 +16,7 @@ def DFS(startNode):
     while not stack.isEmpty():
         currentNode = stack.pop()
         connections = univisitedConnections(currentNode,visited)
-        print(currentNode.id)
+        #print(currentNode.id)
         steps = steps + [currentNode]
 
         if connections != []:
