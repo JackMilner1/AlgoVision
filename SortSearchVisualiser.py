@@ -22,7 +22,6 @@ def start(clickDelay = 0.2):
 
     items = []
     itemsList = []
-    #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
     solution = runSim(currentSimulation,items,itemToSearch)
     currentStep = 0
     indexOfAns = solution[0]
@@ -68,7 +67,6 @@ def start(clickDelay = 0.2):
             if validInput(text):
                 items.append(int(text))
                 runningSearchSimulation = False
-                #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
                 solution = runSim(currentSimulation,items,itemToSearch)
                 indexOfAns = solution[0]
                 steps = solution[1]
@@ -80,7 +78,6 @@ def start(clickDelay = 0.2):
             if validInput(text):
                 itemToSearch = int(text)
                 runningSearchSimulation = False
-                #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
                 solution = runSim(currentSimulation,items,itemToSearch)
                 indexOfAns = solution[0]
                 steps = solution[1]
@@ -90,7 +87,6 @@ def start(clickDelay = 0.2):
         if runButton.drawButton(screen) and canRunSim and canClickPage:
             runningSearchSimulation = True
             currentStep = 0
-            #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
             solution = runSim(currentSimulation,items,itemToSearch)
             indexOfAns = solution[0]
             steps = solution[1]
