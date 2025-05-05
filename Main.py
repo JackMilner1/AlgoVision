@@ -73,7 +73,7 @@ def algoSelect(clickDelay = 0.2):
     titleButton = Buttons.Button((SCREEN_WIDTH - ((SCREEN_WIDTH) * 0.5)) * 0.5,(SCREEN_HEIGHT - 150) * 0.25,((SCREEN_WIDTH) * 0.5),150,(43,43,55),"Select Topic",128)
     graphButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 - 37,btnWidth,btnHeight,(81,81,88),"Graphs")
     queuesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 - 37,btnWidth,btnHeight,(81,81,88),"Queues")
-    sortButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75,btnWidth,btnHeight,(81,81,88),"Sort")
+    sortButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 - 140,(SCREEN_HEIGHT - btnHeight) * 0.5 + 75,btnWidth,btnHeight,(81,81,88),"Sort/Search")
     treesButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5 + 140,(SCREEN_HEIGHT - btnHeight) * 0.5 +75,btnWidth,btnHeight,(81,81,88),"Trees")
     stackButton = Buttons.Button((SCREEN_WIDTH - btnWidth) * 0.5,(SCREEN_HEIGHT - btnHeight) * 0.5 + (37*3) + 75,btnWidth,btnHeight,(81,81,88),"Stack")
 
