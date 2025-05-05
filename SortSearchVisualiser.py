@@ -16,13 +16,14 @@ pygame.display.set_caption('Play')
 
 def start(clickDelay = 0.2):
     running = True
+    currentSimulation = "LINSEARCH" # options = BINSEARCH,LINSEARCH,MERGESORT,BUBBLESORT,QUICKSORT
 
     itemToSearch = 7
 
     items = []
     itemsList = []
     #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
-    solution = LinearSearch.LinearSearch(items,itemToSearch)
+    solution = runSim(currentSimulation,items,itemToSearch)
     currentStep = 0
     indexOfAns = solution[0]
     steps = solution[1]
@@ -31,6 +32,7 @@ def start(clickDelay = 0.2):
 
     warningButton = Buttons.Button(SCREEN_WIDTH * 0.48, SCREEN_HEIGHT * 0.16,70,70,(43,43,55),"Preconditions not met for search")
     runButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7 - 100,90,90,(35, 35, 38),"Run")
+    changeSimButton = Buttons.Button(SCREEN_WIDTH * 0.85 + 100 ,SCREEN_HEIGHT * 0.7 - 100,90,90,(35, 35, 38),"Sim:Linear")
     addItemButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Add Item")
     searchItemButton = Buttons.Button(SCREEN_WIDTH * 0.85 + 100,SCREEN_HEIGHT * 0.7,90,90,(35, 35, 38),"Search Item")
     sortItemsButton = Buttons.Button(SCREEN_WIDTH * 0.85,SCREEN_HEIGHT * 0.7+100,90,90,(35, 35, 38),"Sort Items")
@@ -39,7 +41,6 @@ def start(clickDelay = 0.2):
     text = ""
     runningSearchSimulation = False
     runningSortSimulation = False
-    currentSimulation = "LINSEARCH" # options = BINSEARCH,LINSEARCH,MERGESORT,BUBBLESORT,QUICKSORT
     canRunSim = isValidSim(currentSimulation,items)
 
     pageClickDelay = Delay.Timer(clickDelay)
@@ -68,7 +69,7 @@ def start(clickDelay = 0.2):
                 items.append(int(text))
                 runningSearchSimulation = False
                 #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
-                solution = LinearSearch.LinearSearch(items,itemToSearch)
+                solution = runSim(currentSimulation,items,itemToSearch)
                 indexOfAns = solution[0]
                 steps = solution[1]
                 canRunSim = isValidSim(currentSimulation,items)
@@ -80,7 +81,7 @@ def start(clickDelay = 0.2):
                 itemToSearch = int(text)
                 runningSearchSimulation = False
                 #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
-                solution = LinearSearch.LinearSearch(items,itemToSearch)
+                solution = runSim(currentSimulation,items,itemToSearch)
                 indexOfAns = solution[0]
                 steps = solution[1]
             text = ""
@@ -90,7 +91,7 @@ def start(clickDelay = 0.2):
             runningSearchSimulation = True
             currentStep = 0
             #solution = BinarySearch.BinarySearch(items,itemToSearch,0,len(items))
-            solution = LinearSearch.LinearSearch(items,itemToSearch)
+            solution = runSim(currentSimulation,items,itemToSearch)
             indexOfAns = solution[0]
             steps = solution[1]
             delayTimer.reset(1)
@@ -136,6 +137,16 @@ def start(clickDelay = 0.2):
 
         if backButton.drawButton(screen) and canClickPage:
             running = False
+
+        if changeSimButton.drawButton(screen):
+            if currentSimulation == "LINSEARCH":
+                currentSimulation = "BINSEARCH"
+                changeSimButton.changeText("Sim:Binary")
+            else:
+                currentSimulation = "LINSEARCH"
+                changeSimButton.changeText("Sim:Linear")
+            
+            canRunSim = isValidSim(currentSimulation,items)
 
         pygame.display.flip()
         
@@ -202,3 +213,9 @@ def drawTextBox(textSoFar,x,y,text):
     pygame.draw.rect(screen,(50,50,50),newRect)
     draw_text(textSoFar,(255,255,255),newRect,"left")
     draw_text(text,(255,255,255),textRect)
+
+def runSim(type,items,itemToSearch):
+    if type == "LINSEARCH":
+        return LinearSearch.LinearSearch(items,itemToSearch)
+    elif type == "BINSEARCH":
+        return BinarySearch.BinarySearch(items,itemToSearch,0,len(items))

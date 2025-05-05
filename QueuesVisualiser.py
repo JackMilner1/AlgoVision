@@ -11,7 +11,7 @@ SCREEN_HEIGHT = Globals.SCREEN_HEIGHT
 screen = Globals.screen
 pygame.display.set_caption('Play')
 
-def start(clickDelay = 0.2):#
+def start(clickDelay = 0.2):
     items = ["3","4","5","6"]
     queueType = "FIFO" # options [FIFO,PRIO,CIRCLE]
     running = True
@@ -48,6 +48,9 @@ def drawItems(items,searched = []):
         else:
             pygame.draw.rect(screen,(0,0,0),rect,border_radius=20)
         draw_text(str(items[i]),(255,255,255),rect)
+
+def drawCircularQueueItems(items):
+    pass
 
 def draw_text(text,colour,rect,alignment="centre"):
     text_color = colour
