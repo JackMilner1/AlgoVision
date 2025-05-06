@@ -2,6 +2,7 @@ import pygame
 import Globals
 import QueueTypes
 import QueueTypes.FIFOQueue
+import UIUtils.Timer as Delay
 
 pygame.init()
 
@@ -19,10 +20,14 @@ def start(clickDelay = 0.2):
     newQueue = QueueTypes.FIFOQueue.StandardQueue()
     newQueue.enqueue(5)
 
+    pageClickDelay = Delay.Timer(clickDelay)
+    pageClickDelay.start()
+
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                return False,False
 
         screen.fill((43,43,55))
         pygame.draw.rect(screen,(35, 35, 38),(0,0,SCREEN_WIDTH,SCREEN_HEIGHT*0.15))
@@ -32,6 +37,8 @@ def start(clickDelay = 0.2):
         pygame.display.flip()
 
     pygame.quit()
+
+    return True,False
 
 def drawItems(items,searched = []):
     searchCopy = searched.copy()
