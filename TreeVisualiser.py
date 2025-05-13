@@ -16,6 +16,8 @@ def start(clickDelay = 0.2):
     running = True
     nodes = []
 
+    unassignedNodes = []
+
     nodeFromSelected = None
     warningButton = Button.Button(SCREEN_WIDTH * 0.48, SCREEN_HEIGHT * 0.16,70,70,(43,43,55),"")
     screenClickArea = Button.Button(0,SCREEN_HEIGHT*0.15,SCREEN_WIDTH*0.85,SCREEN_HEIGHT*0.85,(43,43,55))
@@ -40,7 +42,7 @@ def start(clickDelay = 0.2):
         screen.fill((43,43,55))
 
         if screenClickArea.drawButton(screen) and canClickPage:
-            nodeFromSelected = manageScreenClick(nodes,nodeFromSelected,mode)
+            nodeFromSelected = manageScreenClick(nodes,nodeFromSelected,mode,unassignedNodes)
          
         
         for node in nodes:
@@ -51,6 +53,7 @@ def start(clickDelay = 0.2):
 
         if resetButton.drawButton(screen) and canClickPage:
             nodes = []
+            unassignedNodes = []
 
         if modeButton.drawButton(screen) and canClickPage:
             if mode == "ADD":
@@ -80,7 +83,7 @@ def start(clickDelay = 0.2):
     return True,False
     
 
-def manageScreenClick(nodes,nodeFromSelected,mode):
+def manageScreenClick(nodes,nodeFromSelected,mode,unassigned):
     coords = pygame.mouse.get_pos()
     x = coords[0] - 50
     y = coords[1] - 50
@@ -100,13 +103,21 @@ def manageScreenClick(nodes,nodeFromSelected,mode):
             if mode == "DEL" and ((x - 100 < node.x < x + 100) and (y - 100 < node.y < y + 100)) and not alreadyDeleting:
                 alreadyDeleting = True
                 target = (node.x,node.y)
+                unassigned.append(node.id)
+                print(unassigned)
                 nodes.remove(node)
                 dereferenceNode(nodes,node)
                 cleanup(nodes,target)
   
     if canPlace and mode == "ADD":
         nodeFromSelected = None
-        newNode = GraphClasses.VertexGeometry(len(nodes) + 1,x,y)
+        nodeNum = len(nodes) + 1
+        newNode = None
+        if len(unassigned) > 1:
+            newNode = GraphClasses.VertexGeometry(unassigned[0],x,y)
+            unassigned.remove(unassigned[0])
+        else: 
+            newNode = GraphClasses.VertexGeometry(len(nodes) + 1,x,y)
         nodes.append(newNode)
 
     return nodeFromSelected
