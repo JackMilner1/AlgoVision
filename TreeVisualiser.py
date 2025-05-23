@@ -42,8 +42,8 @@ def start(clickDelay = 0.2):
         screen.fill((43,43,55))
 
         if screenClickArea.drawButton(screen) and canClickPage:
-            nodeFromSelected = manageScreenClick(nodes,nodeFromSelected,mode,unassignedNodes)
-         
+            nodeFromSelected,unassignedNodes = manageScreenClick(nodes,nodeFromSelected,mode,unassignedNodes)
+            print(unassignedNodes)
         
         for node in nodes:
             node.drawEdges()
@@ -104,7 +104,6 @@ def manageScreenClick(nodes,nodeFromSelected,mode,unassigned):
                 alreadyDeleting = True
                 target = (node.x,node.y)
                 unassigned.append(node.id)
-                print(unassigned)
                 nodes.remove(node)
                 dereferenceNode(nodes,node)
                 cleanup(nodes,target)
@@ -113,14 +112,14 @@ def manageScreenClick(nodes,nodeFromSelected,mode,unassigned):
         nodeFromSelected = None
         nodeNum = len(nodes) + 1
         newNode = None
-        if len(unassigned) > 1:
+        if len(unassigned) >= 1:
             newNode = GraphClasses.VertexGeometry(unassigned[0],x,y)
             unassigned.remove(unassigned[0])
         else: 
             newNode = GraphClasses.VertexGeometry(len(nodes) + 1,x,y)
         nodes.append(newNode)
 
-    return nodeFromSelected
+    return nodeFromSelected,unassigned
 
 def cleanup(nodes,target):
     for node in nodes:
